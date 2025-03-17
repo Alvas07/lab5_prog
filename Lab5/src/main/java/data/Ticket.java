@@ -1,11 +1,12 @@
 package data;
 
 import exceptions.ValidationException;
+import utils.TicketComparator;
 import utils.Validator;
 
 import java.time.LocalDate;
 
-public class Ticket {
+public class Ticket implements Comparable<Ticket> {
     private int id; // Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; // Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; // Поле не может быть null
@@ -82,5 +83,23 @@ public class Ticket {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    @Override
+    public int compareTo(Ticket other) {
+        return new TicketComparator().compare(this, other);
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", coordinates=" + coordinates +
+                ", creationDate=" + creationDate +
+                ", price=" + price +
+                ", type=" + type +
+                ", person=" + person +
+                '}';
     }
 }
