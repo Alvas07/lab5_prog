@@ -1,5 +1,8 @@
 package data;
 
+import exceptions.ValidationException;
+import utils.Validator;
+
 import java.time.LocalDate;
 
 public class Ticket {
@@ -10,6 +13,20 @@ public class Ticket {
     private float price; // Значение поля должно быть больше 0
     private TicketType type; // Поле не может быть null
     private Person person; // Поле может быть null
+
+    public Ticket(int id, String name, Coordinates coordinates, LocalDate creationDate, float price, TicketType type, Person person) {
+        this.id = id;
+        this.creationDate = creationDate;
+        this.person = person;
+        try {
+            this.name = Validator.validateName(name);
+            this.coordinates = Validator.validateCoordinates(coordinates);
+            this.price = Validator.validatePrice(price);
+            this.type = Validator.validateType(type);
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     public int getId() {
         return id;
