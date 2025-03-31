@@ -12,9 +12,22 @@ public class Validator {
         }
     }
 
-    public static void validateCoordinates(Coordinates coordinates) throws ValidationException {
-        if (coordinates == null) {
-            throw new ValidationException("Координаты не могут быть null.");
+    public static void validateCoordinatesX(String arg) throws ValidationException {
+        try {
+            float x = Float.parseFloat(arg);
+        } catch (NumberFormatException e) {
+            throw new ValidationException("Координата X должна быть числом типа float.");
+        }
+    }
+
+    public static void validateCoordinatesY(String arg) throws ValidationException {
+        try {
+            Long y = Long.valueOf(arg);
+            if (y > 332) {
+                throw new ValidationException("Координата Y не может быть больше 332 или null.");
+            }
+        } catch (NumberFormatException e) {
+            throw new ValidationException("Координата Y должна быть числом типа long.");
         }
     }
 
@@ -36,17 +49,6 @@ public class Validator {
             throw new ValidationException("Неверный параметр. Выберите один из предложенных.");
         }
 
-    }
-
-    public static void validateCoordinatesY(String arg) throws ValidationException {
-        try {
-            Long y = Long.valueOf(arg);
-            if (y > 332) {
-                throw new ValidationException("Координата Y не может быть больше 332 или null.");
-            }
-        } catch (NumberFormatException e) {
-            throw new ValidationException("Координата Y должна быть числом типа long.");
-        }
     }
 
     public static void validateLocationX(String arg) throws ValidationException {
