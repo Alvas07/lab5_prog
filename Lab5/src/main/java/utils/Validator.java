@@ -6,6 +6,9 @@ import data.TicketType;
 import exceptions.ValidationException;
 import utils.generators.IdGenerator;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
+
 public class Validator {
     public static void validateId(String arg) throws ValidationException {
         try {
@@ -40,6 +43,14 @@ public class Validator {
             }
         } catch (NumberFormatException e) {
             throw new ValidationException("Координата Y должна быть числом типа long.");
+        }
+    }
+
+    public static void validateCreationDate(String arg) throws ValidationException {
+        try {
+            LocalDate creationDate = LocalDate.parse(arg);
+        } catch (DateTimeException e) {
+            throw new ValidationException("Неверный формат даты.");
         }
     }
 
