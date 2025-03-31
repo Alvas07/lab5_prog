@@ -4,8 +4,20 @@ import data.Coordinates;
 import data.Person;
 import data.TicketType;
 import exceptions.ValidationException;
+import utils.generators.IdGenerator;
 
 public class Validator {
+    public static void validateId(String arg) throws ValidationException {
+        try {
+            int id = Integer.parseInt(arg);
+            if (!IdGenerator.idIsUnique(id)) {
+                throw new ValidationException("Билет с таким ID уже существует.");
+            }
+        } catch (NumberFormatException e) {
+            throw new ValidationException("ID должен быть числом типа int.");
+        }
+    }
+
     public static void validateName(String arg) throws ValidationException {
         if (arg == null || arg.trim().isEmpty()) {
             throw new ValidationException("Название билета не может быть пустым.");
