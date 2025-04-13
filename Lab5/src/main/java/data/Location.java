@@ -5,6 +5,12 @@ public class Location {
     private Long y; // Поле не может быть null
     private Integer z; // Поле не может быть null
 
+    public Location() {
+        this.x = null;
+        this.y = null;
+        this.z = null;
+    }
+
     public Location(Long x, Long y, Integer z) {
         this.x = x;
         this.y = y;

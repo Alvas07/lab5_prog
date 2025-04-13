@@ -4,6 +4,11 @@ public class Coordinates {
     private float x;
     private Long y; // Максимальное значение поля: 332, Поле не может быть null
 
+    public Coordinates() {
+        this.x = 0;
+        this.y = null;
+    }
+
     public Coordinates(float x, Long y) {
         this.x = x;
         this.y = y;

@@ -6,6 +6,13 @@ public class Person {
     private String passportID; // Длина строки не должна быть больше 28, Поле может быть null
     private Location location; // Поле может быть null
 
+    public Person() {
+        this.height = null;
+        this.weight = 0;
+        this.passportID = null;
+        this.location = null;
+    }
+
     public Person(Float height, int weight, String passportID, Location location) {
         this.height = height;
         this.weight = weight;
