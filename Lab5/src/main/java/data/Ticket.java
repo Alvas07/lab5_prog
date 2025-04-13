@@ -1,9 +1,7 @@
 package data;
 
-import exceptions.ValidationException;
 import utils.TicketComparator;
-import utils.Validator;
-
+import utils.generators.IdGenerator;
 import java.time.LocalDate;
 
 public class Ticket implements Comparable<Ticket> {
@@ -15,18 +13,19 @@ public class Ticket implements Comparable<Ticket> {
     private TicketType type; // Поле не может быть null
     private Person person; // Поле может быть null
 
+    public Ticket() {
+        this.id = IdGenerator.getAndIncrement();
+        this.creationDate = LocalDate.now();
+    }
+
     public Ticket(int id, String name, Coordinates coordinates, LocalDate creationDate, float price, TicketType type, Person person) {
         this.id = id;
+        this.name = name;
+        this.coordinates = coordinates;
         this.creationDate = creationDate;
+        this.price = price;
+        this.type = type;
         this.person = person;
-        try {
-            this.name = Validator.validateName(name);
-            this.coordinates = Validator.validateCoordinates(coordinates);
-            this.price = Validator.validatePrice(price);
-            this.type = Validator.validateType(type);
-        } catch (ValidationException e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     public int getId() {

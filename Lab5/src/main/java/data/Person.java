@@ -1,8 +1,5 @@
 package data;
 
-import exceptions.ValidationException;
-import utils.Validator;
-
 public class Person {
     private Float height; // Поле не может быть null, Значение поля должно быть больше 0
     private int weight; // Значение поля должно быть больше 0
@@ -10,14 +7,10 @@ public class Person {
     private Location location; // Поле может быть null
 
     public Person(Float height, int weight, String passportID, Location location) {
+        this.height = height;
+        this.weight = weight;
+        this.passportID = passportID;
         this.location = location;
-        try {
-            this.height = Validator.validateHeight(height);
-            this.weight = Validator.validateWeight(weight);
-            this.passportID = Validator.validatePassportID(passportID);
-        } catch (ValidationException e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     public Float getHeight() {
