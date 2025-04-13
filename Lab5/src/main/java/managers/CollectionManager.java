@@ -36,4 +36,9 @@ public class CollectionManager {
     public int getCollectionSize() {
         return collection.size();
     }
+
+    public void clearCollection() {
+        updateLastModifiedTime();
+        collection.clear();
+    }
 }
