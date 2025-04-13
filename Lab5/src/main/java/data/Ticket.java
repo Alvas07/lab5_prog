@@ -16,6 +16,11 @@ public class Ticket implements Comparable<Ticket> {
     public Ticket() {
         this.id = IdGenerator.getAndIncrement();
         this.creationDate = LocalDate.now();
+        this.name = null;
+        this.coordinates = null;
+        this.price = 0;
+        this.type = null;
+        this.person = null;
     }
 
     public Ticket(int id, String name, Coordinates coordinates, LocalDate creationDate, float price, TicketType type, Person person) {
