@@ -1,5 +1,6 @@
 package managers.commands;
 
+import exceptions.CommandExecuteException;
 import managers.CollectionManager;
 
 public class ClearCommand implements Command {
@@ -10,7 +11,11 @@ public class ClearCommand implements Command {
     }
 
     @Override
-    public void execute(String[] args) {
+    public void execute(String[] args) throws CommandExecuteException {
+        if (args.length != 1) {
+            throw new CommandExecuteException("Команда не принимает аргументы.");
+        }
+
         collectionManager.clearCollection();
         System.out.println("Коллекция очищена.");
     }

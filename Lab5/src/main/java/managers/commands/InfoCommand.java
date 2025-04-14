@@ -1,5 +1,6 @@
 package managers.commands;
 
+import exceptions.CommandExecuteException;
 import managers.CollectionManager;
 
 public class InfoCommand implements Command {
@@ -10,7 +11,11 @@ public class InfoCommand implements Command {
     }
 
     @Override
-    public void execute(String[] args) {
+    public void execute(String[] args) throws CommandExecuteException {
+        if (args.length != 1) {
+            throw new CommandExecuteException("Команда не принимает аргументы.");
+        }
+
         System.out.println("ИНФОРМАЦИЯ О КОЛЛЕКЦИИ");
         System.out.println("Тип коллекции: " + collectionManager.getCollection().getClass().getSimpleName());
         System.out.println("Количество элементов: " + collectionManager.getCollectionSize());

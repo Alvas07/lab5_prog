@@ -12,6 +12,10 @@ public class AverageOfPriceCommand implements Command {
 
     @Override
     public void execute(String[] args) throws CommandExecuteException {
+        if (args.length != 1) {
+            throw new CommandExecuteException("Команда не принимает аргументы.");
+        }
+
         System.out.println("Cредняя цена по всем элементам коллекции равна " + collectionManager.getAveragePrice());
     }
 

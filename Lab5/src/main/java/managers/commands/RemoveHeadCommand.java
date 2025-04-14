@@ -14,6 +14,10 @@ public class RemoveHeadCommand implements Command {
 
     @Override
     public void execute(String[] args) throws CommandExecuteException {
+        if (args.length != 1) {
+            throw new CommandExecuteException("Команда не принимает аргументы.");
+        }
+
         try {
             Ticket head = collectionManager.removeHead();
             System.out.println("ПЕРВЫЙ ЭЛЕМЕНТ КОЛЛЕКЦИИ:");

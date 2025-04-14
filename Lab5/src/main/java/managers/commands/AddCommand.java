@@ -1,6 +1,7 @@
 package managers.commands;
 
 import data.Ticket;
+import exceptions.CommandExecuteException;
 import exceptions.WrongArgumentException;
 import managers.CollectionManager;
 import utils.generators.TicketGenerator;
@@ -13,7 +14,11 @@ public class AddCommand implements Command {
     }
 
     @Override
-    public void execute(String[] args) {
+    public void execute(String[] args) throws CommandExecuteException {
+        if (args.length != 1) {
+            throw new CommandExecuteException("Команда не принимает аргументы.");
+        }
+
         Ticket ticket = TicketGenerator.createTicket();
         try {
             collectionManager.addTicket(ticket);

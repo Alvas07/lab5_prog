@@ -13,6 +13,10 @@ public class MaxByCreationDateCommand implements Command {
 
     @Override
     public void execute(String[] args) throws CommandExecuteException {
+        if (args.length != 1) {
+            throw new CommandExecuteException("Команда не принимает аргументы.");
+        }
+
         try {
             System.out.println(collectionManager.getMaxByDate());
         } catch (EmptyCollectionException e) {

@@ -1,5 +1,6 @@
 package managers.commands;
 
+import exceptions.CommandExecuteException;
 import managers.CollectionManager;
 
 public class ShowCommand implements Command {
@@ -10,7 +11,11 @@ public class ShowCommand implements Command {
     }
 
     @Override
-    public void execute(String[] args) {
+    public void execute(String[] args) throws CommandExecuteException {
+        if (args.length != 1) {
+            throw new CommandExecuteException("Команда не принимает аргументы.");
+        }
+
         if (collectionManager.getCollectionSize() == 0) {
             System.out.println("Коллекция пуста.");
         } else {
