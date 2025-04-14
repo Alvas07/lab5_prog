@@ -2,6 +2,7 @@ package managers.commands;
 
 import data.Ticket;
 import exceptions.CommandExecuteException;
+import exceptions.RemoveException;
 import exceptions.WrongArgumentException;
 import managers.CollectionManager;
 
@@ -22,7 +23,7 @@ public class RemoveByIdCommand implements Command {
             int id = Integer.parseInt(args[1]);
             Ticket ticket = collectionManager.getById(id);
             collectionManager.removeTicket(ticket);
-        } catch (WrongArgumentException | NumberFormatException e) {
+        } catch (WrongArgumentException | NumberFormatException | RemoveException e) {
             System.out.println(e.getMessage());
         }
     }
