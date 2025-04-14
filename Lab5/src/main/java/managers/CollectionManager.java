@@ -2,6 +2,7 @@ package managers;
 
 import data.Ticket;
 import exceptions.CommandExecuteException;
+import exceptions.EmptyCollectionException;
 import exceptions.RemoveException;
 import exceptions.WrongArgumentException;
 import utils.DateTimeUtils;
@@ -106,5 +107,21 @@ public class CollectionManager {
             sumPrice += ticket.getPrice();
         }
         return sumPrice / getCollectionSize();
+    }
+
+    public Ticket getMaxByDate() throws EmptyCollectionException {
+        if (collection.isEmpty()) {
+            throw new EmptyCollectionException("Невозможно найти максимальный элемент.");
+        }
+
+        Ticket ticket = null;
+        for (Ticket t : collection) {
+            if (ticket == null) {
+                ticket = t;
+            } else if (ticket.compareToByDate(t) < 0) {
+                ticket = t;
+            }
+        }
+        return ticket;
     }
 }
