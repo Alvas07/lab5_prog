@@ -61,10 +61,10 @@ public class TicketGenerator {
                 personFlag = switch (input) {
                     case "да" -> true;
                     case "нет" -> false;
-                    default -> throw new Exception("Необходимо выбрать один из двух вариантов ответа.");
+                    default -> throw new IllegalArgumentException("Необходимо выбрать один из двух вариантов ответа.");
                 };
                 break;
-            } catch (Exception e) {
+            } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
         }
