@@ -95,4 +95,16 @@ public class CollectionManager {
         updateLastModifiedTime();
         return head;
     }
+
+    public float getAveragePrice() {
+        if (collection.isEmpty()) {
+            return (float) 0;
+        }
+
+        float sumPrice = 0;
+        for (Ticket ticket : collection) {
+            sumPrice += ticket.getPrice();
+        }
+        return sumPrice / getCollectionSize();
+    }
 }
