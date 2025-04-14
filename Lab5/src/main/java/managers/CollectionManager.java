@@ -1,6 +1,8 @@
 package managers;
 
 import data.Ticket;
+import exceptions.CommandExecuteException;
+import exceptions.RemoveException;
 import exceptions.WrongArgumentException;
 import utils.DateTimeUtils;
 
@@ -77,7 +79,20 @@ public class CollectionManager {
         }
     }
 
-    public void removeTicket(Ticket ticket) {
+    public void removeTicket(Ticket ticket) throws RemoveException {
+        if (ticket == null) {
+            throw new RemoveException("Удаляемый элемент не может быть null.");
+        }
         collection.remove(ticket);
+        updateLastModifiedTime();
+    }
+
+    public Ticket removeHead() throws RemoveException {
+        Ticket head = collection.poll();
+        if (head == null) {
+            throw new RemoveException("Удаляемый элемент не может быть null.");
+        }
+        updateLastModifiedTime();
+        return head;
     }
 }
