@@ -1,7 +1,7 @@
 package managers.commands;
 
 import data.Ticket;
-import exceptions.NotEnoughArgumentsException;
+import exceptions.CommandExecuteException;
 import exceptions.WrongArgumentException;
 import managers.CollectionManager;
 
@@ -13,9 +13,9 @@ public class RemoveByIdCommand implements Command {
     }
 
     @Override
-    public void execute(String[] args) throws NotEnoughArgumentsException {
+    public void execute(String[] args) throws CommandExecuteException {
         if (args.length != 2) {
-            throw new NotEnoughArgumentsException("Команда принимает один обязательный аргумент.");
+            throw new CommandExecuteException("Команда принимает один обязательный аргумент.");
         }
 
         try {

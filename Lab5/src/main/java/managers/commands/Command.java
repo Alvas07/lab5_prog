@@ -1,9 +1,9 @@
 package managers.commands;
 
-import exceptions.NotEnoughArgumentsException;
+import exceptions.CommandExecuteException;
 
 public interface Command {
-    void execute(String[] args) throws NotEnoughArgumentsException;
+    void execute(String[] args) throws CommandExecuteException;
 
     String getName();
 
