@@ -1,6 +1,7 @@
 package managers;
 
 import data.Ticket;
+import exceptions.WrongArgumentException;
 import utils.DateTimeUtils;
 
 import java.time.LocalDateTime;
@@ -39,6 +40,17 @@ public class CollectionManager {
 
     public void clearCollection() {
         collection.clear();
+        updateLastModifiedTime();
+    }
+
+    public void addTicket(Ticket ticket) throws WrongArgumentException {
+        if (ticket == null) {
+            throw new WrongArgumentException("Билет не может быть null.");
+        }
+        if (collection.contains(ticket)) {
+            throw new WrongArgumentException("Билет уже содержится в данной коллекции.");
+        }
+        collection.addLast(ticket);
         updateLastModifiedTime();
     }
 }
