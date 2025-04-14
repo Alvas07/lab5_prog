@@ -53,4 +53,28 @@ public class CollectionManager {
         collection.addLast(ticket);
         updateLastModifiedTime();
     }
+
+    public Ticket getById(int id) throws WrongArgumentException {
+        Ticket ticket = collection.stream().filter(t -> t.getId() == id).findFirst().orElse(null);
+        if (ticket == null) {
+            throw new WrongArgumentException("Билета с таким id нет в коллекции.");
+        }
+        return ticket;
+    }
+
+    public void updateTicket(int id, Ticket newTicket) {
+        try {
+            Ticket oldTicket = getById(id);
+            oldTicket.setName(newTicket.getName());
+            oldTicket.setCoordinates(newTicket.getCoordinates());
+            oldTicket.setPrice(newTicket.getPrice());
+            oldTicket.setCreationDate(newTicket.getCreationDate());
+            oldTicket.setType(newTicket.getType());
+            oldTicket.setPerson(newTicket.getPerson());
+            updateLastModifiedTime();
+        } catch (WrongArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
 }

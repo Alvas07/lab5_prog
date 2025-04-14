@@ -1,0 +1,40 @@
+package managers.commands;
+
+import data.Ticket;
+import exceptions.NotEnoughArgumentsException;
+import managers.CollectionManager;
+import utils.generators.TicketGenerator;
+
+public class UpdateIdCommand implements Command {
+    private final CollectionManager collectionManager;
+
+    public UpdateIdCommand(CollectionManager collectionManager) {
+        this.collectionManager = collectionManager;
+    }
+
+    @Override
+    public void execute(String[] args) throws NotEnoughArgumentsException {
+        if (args.length != 2) {
+            throw new NotEnoughArgumentsException("Команда принимает один обязательный аргумент.");
+        }
+
+        try {
+            int id = Integer.parseInt(args[1]);
+            Ticket ticket = TicketGenerator.createTicket();
+            collectionManager.updateTicket(id, ticket);
+        } catch (NumberFormatException e) {
+            System.out.println("id должен быть целым числом.");
+        }
+
+        }
+
+    @Override
+    public String getName() {
+        return "update id";
+    }
+
+    @Override
+    public String getDescription() {
+        return "обновить элемент по id";
+    }
+}
