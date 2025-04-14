@@ -5,10 +5,10 @@ import exceptions.NotEnoughArgumentsException;
 import managers.CollectionManager;
 import utils.generators.TicketGenerator;
 
-public class UpdateIdCommand implements Command {
+public class UpdateCommand implements Command {
     private final CollectionManager collectionManager;
 
-    public UpdateIdCommand(CollectionManager collectionManager) {
+    public UpdateCommand(CollectionManager collectionManager) {
         this.collectionManager = collectionManager;
     }
 
@@ -30,7 +30,7 @@ public class UpdateIdCommand implements Command {
 
     @Override
     public String getName() {
-        return "update id";
+        return "update";
     }
 
     @Override
