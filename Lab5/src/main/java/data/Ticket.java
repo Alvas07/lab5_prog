@@ -1,6 +1,7 @@
 package data;
 
-import utils.TicketComparator;
+import utils.comparators.TicketByDateComparator;
+import utils.comparators.TicketComparator;
 import utils.generators.IdGenerator;
 import java.time.LocalDate;
 
@@ -87,6 +88,10 @@ public class Ticket implements Comparable<Ticket> {
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    public int compareToByDate(Ticket other) {
+        return new TicketByDateComparator().compare(this, other);
     }
 
     @Override
