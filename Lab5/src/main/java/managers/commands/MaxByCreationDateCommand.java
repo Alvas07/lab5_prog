@@ -18,6 +18,7 @@ public class MaxByCreationDateCommand implements Command {
         }
 
         try {
+            System.out.println("МАКСИМАЛЬНЫЙ ЭЛЕМЕНТ ПО ДАТЕ СОЗДАНИЯ:");
             System.out.println(collectionManager.getMaxByDate());
         } catch (EmptyCollectionException e) {
             System.out.println(e.getMessage());
