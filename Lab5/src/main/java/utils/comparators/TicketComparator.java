@@ -1,4 +1,4 @@
-package utils;
+package utils.comparators;
 
 import data.Ticket;
 import java.util.Comparator;
