@@ -75,6 +75,9 @@ public class CollectionManager {
         } catch (WrongArgumentException e) {
             System.out.println(e.getMessage());
         }
+    }
 
+    public void removeTicket(Ticket ticket) {
+        collection.remove(ticket);
     }
 }
