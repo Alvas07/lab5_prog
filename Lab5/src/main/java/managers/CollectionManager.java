@@ -38,7 +38,7 @@ public class CollectionManager {
     }
 
     public void clearCollection() {
-        updateLastModifiedTime();
         collection.clear();
+        updateLastModifiedTime();
     }
 }
