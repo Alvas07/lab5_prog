@@ -134,4 +134,12 @@ public class CollectionManager {
     public Ticket getMaxTicket() {
         return collection.stream().max(Ticket::compareTo).orElse(null);
     }
+
+    public void removeLower(Ticket ticket) throws RemoveException {
+        if (ticket == null) {
+            throw new RemoveException("Удаляемый элемент не может быть null.");
+        }
+        collection.removeIf(t -> t.compareTo(ticket) < 0);
+        updateLastModifiedTime();
+    }
 }
