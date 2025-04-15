@@ -1,6 +1,7 @@
 package managers;
 
 import data.Ticket;
+import data.TicketType;
 import exceptions.CommandExecuteException;
 import exceptions.EmptyCollectionException;
 import exceptions.RemoveException;
@@ -9,6 +10,7 @@ import utils.DateTimeUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayDeque;
+import java.util.List;
 
 public class CollectionManager {
     private final ArrayDeque<Ticket> collection;
@@ -123,5 +125,9 @@ public class CollectionManager {
             }
         }
         return ticket;
+    }
+
+    public List<Ticket> getFilteredByType(TicketType type) {
+        return collection.stream().filter(t -> t.getType().equals(type)).toList();
     }
 }
