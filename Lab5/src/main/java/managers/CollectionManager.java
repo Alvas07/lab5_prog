@@ -130,4 +130,8 @@ public class CollectionManager {
     public List<Ticket> getFilteredByType(TicketType type) {
         return collection.stream().filter(t -> t.getType().equals(type)).toList();
     }
+
+    public Ticket getMaxTicket() {
+        return collection.stream().max(Ticket::compareTo).orElse(null);
+    }
 }
