@@ -6,10 +6,10 @@ import exceptions.RemoveException;
 import managers.CollectionManager;
 import utils.generators.TicketGenerator;
 
-public class RemoveLowerCommad implements Command {
+public class RemoveLowerCommand implements Command {
     private final CollectionManager collectionManager;
 
-    public RemoveLowerCommad(CollectionManager collectionManager) {
+    public RemoveLowerCommand(CollectionManager collectionManager) {
         this.collectionManager = collectionManager;
     }
 
