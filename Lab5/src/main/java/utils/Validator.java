@@ -1,11 +1,7 @@
 package utils;
 
 import data.*;
-import exceptions.ValidationException;
 import utils.generators.IdGenerator;
-
-import java.time.DateTimeException;
-import java.time.LocalDate;
 
 public class Validator {
     public static boolean isValidTicket(Ticket t) {
