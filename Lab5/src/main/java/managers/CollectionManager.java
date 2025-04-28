@@ -2,10 +2,11 @@ package managers;
 
 import data.Ticket;
 import data.TicketType;
-import exceptions.CommandExecuteException;
 import exceptions.EmptyCollectionException;
+import exceptions.FileWriteException;
 import exceptions.RemoveException;
 import exceptions.WrongArgumentException;
+import system.io.XmlWriter;
 import utils.DateTimeUtils;
 
 import java.time.LocalDateTime;
@@ -56,6 +57,11 @@ public class CollectionManager {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    public void saveCollection() throws FileWriteException {
+        XmlWriter writer = new XmlWriter();
+        writer.writeTicketsToFile(Console.DATA_PATH, collection);
     }
 
     public void addTicket(Ticket ticket) throws WrongArgumentException {
