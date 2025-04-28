@@ -7,11 +7,11 @@ import managers.commands.*;
 import java.util.LinkedHashMap;
 
 public class CommandManager {
-    private LinkedHashMap<String, Command> commandList;
+    private final LinkedHashMap<String, Command> commandList;
 
     public CommandManager(CollectionManager collectionManager) {
         commandList = new LinkedHashMap<>();
-        commandList.put("help", new HelpCommand());
+        commandList.put("help", new HelpCommand(collectionManager));
         commandList.put("info", new InfoCommand(collectionManager));
         commandList.put("show", new ShowCommand(collectionManager));
         commandList.put("add", new AddCommand(collectionManager));
