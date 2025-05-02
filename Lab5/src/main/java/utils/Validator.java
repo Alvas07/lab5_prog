@@ -29,19 +29,23 @@ public class Validator {
     }
 
     public static boolean isValidLocation(Location l) {
-        return l.getX() != null &&
+        return (l == null) ||
+
+                (l.getX() != null &&
                 l.getY() != null &&
-                l.getZ() != null;
+                l.getZ() != null);
     }
 
     public static boolean isValidPerson(Person p) {
-        return p.getHeight() != null &&
+        return (p == null) ||
+
+                (p.getHeight() != null &&
                 p.getHeight() > 0 &&
 
                 p.getWeight() > 0 &&
 
                 p.getPassportID().length() <= 28 &&
 
-                isValidLocation(p.getLocation());
+                isValidLocation(p.getLocation()));
     }
 }
