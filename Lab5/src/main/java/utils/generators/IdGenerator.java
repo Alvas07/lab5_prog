@@ -5,11 +5,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public final class IdGenerator {
     private static final AtomicInteger counter = new AtomicInteger(1);
-    private static ArrayList<Integer> idList;
-
-    public IdGenerator() {
-        idList = new ArrayList<>();
-    }
+    private static final ArrayList<Integer> idList = new ArrayList<>();
 
     public static int getAndIncrement() {
         int nextId = counter.getAndIncrement();
