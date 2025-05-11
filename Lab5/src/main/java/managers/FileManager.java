@@ -20,11 +20,11 @@ public class FileManager {
         this.collectionManager = collectionManager;
     }
 
-    public boolean canRead(String fileName) {
+    public boolean canRead() {
         return reader.canRead(fileName);
     }
 
-    public boolean canWrite(String fileName) {
+    public boolean canWrite() {
         return writer.canWrite(fileName);
     }
 
