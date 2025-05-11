@@ -52,7 +52,7 @@ public class XmlReader implements TicketReader {
         return true;
     }
 
-    public String bufferedReaderToString(BufferedReader br) throws IOException {
+    protected String bufferedReaderToString(BufferedReader br) throws IOException {
         StringBuilder sb = new StringBuilder();
         String line;
         while ((line = br.readLine()) != null) {
