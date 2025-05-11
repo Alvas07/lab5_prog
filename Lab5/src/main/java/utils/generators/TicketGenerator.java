@@ -1,79 +1,38 @@
 package utils.generators;
 
-import data.*;
-import exceptions.ValidationException;
-import utils.Validator;
+import data.Coordinates;
+import data.Person;
+import data.Ticket;
+import data.TicketType;
+import exceptions.ObjectCreationException;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.time.LocalDate;
 
-public class TicketGenerator {
-    public static Ticket createTicket() {
-        System.out.println("Добро пожаловать в Формирователь Билета.");
 
-        Scanner scanner = new Scanner(System.in);
-        String input;
-        boolean personFlag;
-        Ticket ticket = new Ticket();
-
-        while (true) {
-            try {
-                System.out.print("Введите название билета (String): ");
-                input = scanner.nextLine().trim();
-                ticket.setName(Validator.validateName(input));
-                break;
-            } catch (ValidationException e) {
-                System.out.println(e.getMessage());
-            }
+public class TicketGenerator extends ObjectGenerator<Ticket> {
+    @Override
+    public Ticket create(boolean fileMode) throws ObjectCreationException {
+        if (!fileMode) {
+            System.out.println("Добро пожаловать в Формирователь билета.");
         }
+        return new Ticket(IdGenerator.getAndIncrement(),
+                askString("Наименование (string, not null, not empty):", x -> (x != null && !x.isEmpty()), fileMode),
+                askCoordinates(fileMode),
+                LocalDate.now(),
+                askFloat("Стоимость (float, not null, >0):", x -> (x != null && x > 0), fileMode),
+                askTicketType(fileMode),
+                askPerson(fileMode));
+    }
 
-        ticket.setCoordinates(CoordinatesGenerator.createCoordinates());
+    private Coordinates askCoordinates(boolean fileMode) throws ObjectCreationException {
+        return new CoordinatesGenerator().create(fileMode);
+    }
 
-        while (true) {
-            try {
-                System.out.print("Введите цену (float, >0): ");
-                input = scanner.nextLine().trim();
-                ticket.setPrice(Validator.validatePrice(input));
-                break;
-            } catch (ValidationException e) {
-                System.out.println(e.getMessage());
-            }
-        }
+    private Person askPerson(boolean fileMode) throws ObjectCreationException {
+        return new PersonGenerator().create(fileMode);
+    }
 
-        while (true) {
-            try {
-                TicketType[] values = TicketType.values();
-                List<String> names = Arrays.stream(values).map(Enum::name).toList();
-                System.out.print("Выберите тип билета (" + String.join(", ", names) + "): ");
-                input = scanner.nextLine().trim().toUpperCase();
-                ticket.setType(Validator.validateType(input));
-                break;
-            } catch (ValidationException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-
-        while (true) {
-            try {
-                System.out.print("Хотите ли вы добавить пассажира? (да/нет): ");
-                input = scanner.nextLine().trim().toLowerCase();
-                personFlag = switch (input) {
-                    case "да" -> true;
-                    case "нет" -> false;
-                    default -> throw new IllegalArgumentException("Необходимо выбрать один из двух вариантов ответа.");
-                };
-                break;
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-
-        if (personFlag) {
-            ticket.setPerson(PersonGenerator.createPerson());
-        }
-
-        System.out.println("Билет создан.");
-        return ticket;
+    private TicketType askTicketType(boolean fileMode) throws ObjectCreationException {
+        return (TicketType) askEnum("Тип билета:", TicketType.values(), x -> true, fileMode);
     }
 }

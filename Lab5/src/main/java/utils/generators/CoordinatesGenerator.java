@@ -1,42 +1,17 @@
 package utils.generators;
 
 import data.Coordinates;
-import exceptions.ValidationException;
-import utils.Validator;
+import exceptions.ObjectCreationException;
 
-import java.util.Scanner;
+import java.util.Objects;
 
-public class CoordinatesGenerator {
-    public static Coordinates createCoordinates() {
-        System.out.println("Добро пожаловать в Формирователь Координат.");
-
-        Scanner scanner = new Scanner(System.in);
-        String input;
-        Coordinates coordinates = new Coordinates();
-
-        while (true) {
-            try {
-                System.out.print("Введите координату X (float): ");
-                input = scanner.nextLine().trim();
-                coordinates.setX(Validator.validateCoordinatesX(input));
-                break;
-            } catch (ValidationException e) {
-                System.out.println(e.getMessage());
-            }
+public class CoordinatesGenerator extends ObjectGenerator<Coordinates> {
+    @Override
+    public Coordinates create(boolean fileMode) throws ObjectCreationException {
+        if (!fileMode) {
+            System.out.println("Добро пожаловать в Формировать координат.");
         }
-
-        while (true) {
-            try {
-                System.out.print("Введите координату Y (Long, <=332): ");
-                input = scanner.nextLine().trim();
-                coordinates.setY(Validator.validateCoordinatesY(input));
-                break;
-            } catch (ValidationException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-
-        System.out.println("Координаты созданы.");
-        return coordinates;
+        return new Coordinates(askFloat("Координата по X (float, not null):", Objects::nonNull, fileMode),
+                askLong("Координата по Y (Long, not null, <=332):", x -> (x != null && x <= 332), fileMode));
     }
 }
