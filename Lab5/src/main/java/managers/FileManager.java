@@ -28,18 +28,14 @@ public class FileManager {
         return writer.canWrite(fileName);
     }
 
-    public void fillCollectionFromXml() {
-        try {
-            List<Ticket> tickets = reader.readTickets(fileName);
-            for (Ticket ticket : tickets) {
-                try {
-                    collectionManager.addTicket(ticket);
-                } catch (WrongArgumentException e) {
-                    System.out.println(e.getMessage());
-                }
+    public void fillCollectionFromXml() throws FileReadException {
+        List<Ticket> tickets = reader.readTickets(fileName);
+        for (Ticket ticket : tickets) {
+            try {
+                collectionManager.addTicket(ticket);
+            } catch (WrongArgumentException e) {
+                System.out.println(e.getMessage());
             }
-        } catch (FileReadException e) {
-            System.out.println(e.getMessage());
         }
     }
 
