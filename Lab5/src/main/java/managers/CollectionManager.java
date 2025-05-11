@@ -49,21 +49,6 @@ public class CollectionManager {
         updateLastModifiedTime();
     }
 
-    public void fillCollection(List<Ticket> tickets) {
-        for (Ticket ticket : tickets) {
-            try {
-                addTicket(ticket);
-            } catch (WrongArgumentException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-
-    public void saveCollection() throws FileWriteException {
-        XmlWriter writer = new XmlWriter();
-        writer.writeTicketsToFile(Console.DATA_PATH, collection);
-    }
-
     public void addTicket(Ticket ticket) throws WrongArgumentException {
         if (ticket == null) {
             throw new WrongArgumentException("Билет не может быть null.");

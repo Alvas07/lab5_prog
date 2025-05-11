@@ -3,6 +3,8 @@ package managers.commands;
 import exceptions.CommandExecuteException;
 import exceptions.FileWriteException;
 import managers.CollectionManager;
+import managers.Console;
+import managers.FileManager;
 
 public class SaveCommand implements Command {
     private final CollectionManager collectionManager;
@@ -18,7 +20,8 @@ public class SaveCommand implements Command {
         }
 
         try {
-            collectionManager.saveCollection();
+            FileManager fileManager = new FileManager(Console.DATA_PATH, collectionManager);
+            fileManager.saveCollectionToXml();
         } catch (FileWriteException e) {
             System.out.println(e.getMessage());
         }
