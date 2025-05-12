@@ -6,24 +6,37 @@ import java.util.Scanner;
 import java.util.Stack;
 
 public class ScriptManager {
-    private static final Stack<String> fileNames = new Stack<>();
-    private static final Stack<Scanner> scanners = new Stack<>();
+  private static final Stack<String> fileNames = new Stack<>();
+  private static final Stack<Scanner> scanners = new Stack<>();
+  private static boolean fileMode = false;
 
-    public static boolean isRecursive(String fileName) {
-        return fileNames.contains(new File(fileName).getAbsolutePath());
-    }
+  public static boolean isRecursive(String fileName) {
+    return fileNames.contains(new File(fileName).getAbsolutePath());
+  }
 
-    public static void addPath(String fileName) throws FileNotFoundException {
-        fileNames.push(new File(fileName).getAbsolutePath());
-        scanners.push(new Scanner(new File(fileName)));
-    }
+  public static void addPath(String fileName) throws FileNotFoundException {
+    fileNames.push(new File(fileName).getAbsolutePath());
+    scanners.push(new Scanner(new File(fileName)));
+  }
 
-    public static void removePath() {
-        fileNames.pop();
-        scanners.pop();
-    }
+  public static void removePath() {
+    fileNames.pop();
+    scanners.pop();
+  }
 
-    public static Scanner getLastScanner() {
-        return scanners.lastElement();
-    }
+  public static Scanner getLastScanner() {
+    return scanners.lastElement();
+  }
+
+  public static boolean getFileMode() {
+    return fileMode;
+  }
+
+  public static void activateFileMode() {
+    fileMode = true;
+  }
+
+  public static void deactivateFileMode() {
+    fileMode = false;
+  }
 }

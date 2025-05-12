@@ -3,9 +3,9 @@ package managers.commands;
 import exceptions.CommandExecuteException;
 
 public interface Command {
-    void execute(String[] args) throws CommandExecuteException;
+  void execute(String[] args) throws CommandExecuteException;
 
-    String getName();
+  String getName();
 
-    String getDescription();
+  String getDescription();
 }

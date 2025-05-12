@@ -2,11 +2,10 @@ package system.io;
 
 import data.Ticket;
 import exceptions.FileWriteException;
-
-import java.util.Collection;
+import java.util.List;
 
 public interface TicketWriter {
-    void writeTicketsToFile(String fileName, Collection<Ticket> tickets) throws FileWriteException;
+  void writeTicketsToFile(String fileName, List<Ticket> tickets) throws FileWriteException;
 
-    boolean canWrite(String fileName);
+  boolean canWrite(String fileName);
 }
