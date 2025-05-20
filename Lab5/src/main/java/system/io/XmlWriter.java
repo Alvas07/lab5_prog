@@ -10,9 +10,32 @@ import java.nio.charset.StandardCharsets;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Класс, отвечающий за преобразование объектов класса {@link Ticket} в формат XML и их запись в
+ * файл.
+ *
+ * @see Ticket
+ * @author Alvas
+ * @since 1.0
+ */
 public class XmlWriter implements TicketWriter {
   private int tabsCount = 0;
 
+  /**
+   * Преобразует каждый объект класса {@link Ticket} из списка в формат XML и записывает его в файл.
+   *
+   * <p>Для записи данных в файл использует класс {@link BufferedOutputStream}.
+   *
+   * <p>Перед записью сортирует все объекты в порядке возрастания {@code id}.
+   *
+   * @param fileName путь к файлу.
+   * @param tickets список объектов класса {@link Ticket}.
+   * @see Ticket
+   * @see BufferedOutputStream
+   * @throws FileWriteException если невозможно записать в файл.
+   * @author Alvas
+   * @since 1.0
+   */
   @Override
   public void writeTicketsToFile(String fileName, List<Ticket> tickets) throws FileWriteException {
     if (!canWrite(fileName)) {
@@ -20,7 +43,6 @@ public class XmlWriter implements TicketWriter {
     }
 
     tickets.sort(Comparator.comparingInt(Ticket::getId));
-    int tabsCount = 1;
     try (BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(fileName))) {
       String xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
       writer.write(xmlString.getBytes(StandardCharsets.UTF_8));
@@ -39,6 +61,14 @@ public class XmlWriter implements TicketWriter {
     }
   }
 
+  /**
+   * Показывает возможность записи данных в файл.
+   *
+   * @param fileName путь к файлу.
+   * @return {@code true} - если файл доступен для записи, {@code false} - если нет.
+   * @author Alvas
+   * @since 1.0
+   */
   @Override
   public boolean canWrite(String fileName) {
     File file = new File(fileName);
@@ -60,6 +90,18 @@ public class XmlWriter implements TicketWriter {
     return true;
   }
 
+  /**
+   * Преобразует объект класса {@link Ticket} в формат XML и записывает его в файл.
+   *
+   * @param writer объект класса {@link BufferedOutputStream} для записи в файл.
+   * @param ticket объект класса {@link Ticket} для преобразования в формат XML и последующей
+   *     записи.
+   * @see Ticket
+   * @see BufferedOutputStream
+   * @throws FileWriteException если происходит ошибка при записи в файл.
+   * @author Alvas
+   * @since 1.0
+   */
   private void writeTicket(BufferedOutputStream writer, Ticket ticket) throws FileWriteException {
     try {
       String xmlString = "\t".repeat(tabsCount) + "<ticket>\n";
@@ -81,6 +123,17 @@ public class XmlWriter implements TicketWriter {
     }
   }
 
+  /**
+   * Записывает XML-элемент в файл.
+   *
+   * @param writer объект класса {@link BufferedOutputStream} для записи в файл.
+   * @param tagName имя XML-тега.
+   * @param value значение XML-элемента.
+   * @see BufferedOutputStream
+   * @throws FileWriteException если происходит ошибка при записи в файл.
+   * @author Alvas
+   * @since 1.0
+   */
   private void writeElement(BufferedOutputStream writer, String tagName, Object value)
       throws FileWriteException {
     try {
@@ -96,6 +149,18 @@ public class XmlWriter implements TicketWriter {
     }
   }
 
+  /**
+   * Преобразует объект класса {@link Coordinates} в формат XML и записывает его в файл.
+   *
+   * @param writer объект класса {@link BufferedOutputStream} для записи в файл.
+   * @param coordinates объект класса {@link Coordinates} для преобразования в формат XML и
+   *     последующей записи.
+   * @see Coordinates
+   * @see BufferedOutputStream
+   * @throws FileWriteException если происходит ошибка при записи в файл.
+   * @author Alvas
+   * @since 1.0
+   */
   private void writeCoordinates(BufferedOutputStream writer, Coordinates coordinates)
       throws FileWriteException {
     try {
@@ -113,6 +178,18 @@ public class XmlWriter implements TicketWriter {
     }
   }
 
+  /**
+   * Преобразует объект класса {@link Location} в формат XML и записывает его в файл.
+   *
+   * @param writer объект класса {@link BufferedOutputStream} для записи в файл.
+   * @param location объект класса {@link Location} для преобразования в формат XML и последующей
+   *     записи.
+   * @see Location
+   * @see BufferedOutputStream
+   * @throws FileWriteException если происходит ошибка при записи в файл.
+   * @author Alvas
+   * @since 1.0
+   */
   private void writeLocation(BufferedOutputStream writer, Location location)
       throws FileWriteException {
     try {
@@ -131,6 +208,18 @@ public class XmlWriter implements TicketWriter {
     }
   }
 
+  /**
+   * Преобразует объект класса {@link Person} в формат XML и записывает его в файл.
+   *
+   * @param writer объект класса {@link BufferedOutputStream} для записи в файл.
+   * @param person объект класса {@link Person} для преобразования в формат XML и последующей
+   *     записи.
+   * @see Person
+   * @see BufferedOutputStream
+   * @throws FileWriteException если происходит ошибка при записи в файл.
+   * @author Alvas
+   * @since 1.0
+   */
   private void writePerson(BufferedOutputStream writer, Person person) throws FileWriteException {
     try {
       String xmlString = "\t".repeat(tabsCount) + "<person>\n";
@@ -149,10 +238,22 @@ public class XmlWriter implements TicketWriter {
     }
   }
 
+  /**
+   * Увеличивает на 1 текущее количество отступов в XML-документе.
+   *
+   * @author Alvas
+   * @since 1.0
+   */
   private void incrementTabs() {
     tabsCount += 1;
   }
 
+  /**
+   * Уменьшает на 1 текущее количество отступов в XML-документе.
+   *
+   * @author Alvas
+   * @since 1.0
+   */
   private void decrementTabs() {
     tabsCount -= 1;
   }

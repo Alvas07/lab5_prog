@@ -4,20 +4,41 @@
 		<id>1</id>
 		<name>124</name>
 		<coordinates>
-			<cx>21.0</cx>
-			<cy>12</cy>
+			<cx>2.0</cx>
+			<cy>2</cy>
 		</coordinates>
-		<creationDate>2025-05-12</creationDate>
-		<price>21.0</price>
+		<creationDate>2025-05-21</creationDate>
+		<price>2.0</price>
+		<type>BUDGETARY</type>
+		<person>
+			<height>12.0</height>
+			<weight>5</weight>
+			<passportID>2</passportID>
+			<location>
+				<lx>1</lx>
+				<ly>2</ly>
+				<lz>2</lz>
+			</location>
+		</person>
+	</ticket>
+	<ticket>
+		<id>2</id>
+		<name>4</name>
+		<coordinates>
+			<cx>4.0</cx>
+			<cy>23</cy>
+		</coordinates>
+		<creationDate>2025-05-14</creationDate>
+		<price>34.0</price>
 		<type>VIP</type>
 		<person>
-			<height>2141.0</height>
-			<weight>215</weight>
-			<passportID>12</passportID>
+			<height>4.0</height>
+			<weight>3</weight>
+			<passportID>2</passportID>
 			<location>
-				<lx>125</lx>
-				<ly>125</ly>
-				<lz>125</lz>
+				<lx>3</lx>
+				<ly>3</ly>
+				<lz>3</lz>
 			</location>
 		</person>
 	</ticket>

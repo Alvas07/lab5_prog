@@ -4,10 +4,32 @@ import exceptions.FileReadException;
 import exceptions.UnknownCommandException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import managers.commands.Command;
 
+/**
+ * Класс, отвечающий за связь между пользователем и командами {@link CommandManager}.
+ *
+ * <p>Производит чтение коллекции из исходного файла с помощью {@link FileManager}.
+ *
+ * <p>Затем читает очередную команду {@link Command} из командной строки до момента завершения
+ * работы программы.
+ *
+ * @see Command
+ * @see CommandManager
+ * @see FileManager
+ * @author Alvas
+ * @since 1.0
+ */
 public class Console {
   public static String DATA_PATH;
 
+  /**
+   * Запускает работу приложения.
+   *
+   * @param args путь до файла с коллекцией.
+   * @author Alvas
+   * @since 1.0
+   */
   public void start(String[] args) {
     Scanner scanner = ScannerManager.getScanner();
     CollectionManager collectionManager = new CollectionManager();
@@ -26,7 +48,7 @@ public class Console {
     System.out.println("Добро пожаловать в приложение для управления коллекцией билетов!");
     System.out.println("Для справки введите: help");
     try {
-      while (scanner.hasNextLine()) {
+      while (true) {
         String command = scanner.nextLine().trim();
         if (!command.isEmpty()) {
           try {
@@ -36,8 +58,8 @@ public class Console {
           }
         }
       }
-    } catch (NoSuchElementException | IllegalStateException e) {
-      System.out.println("Завершение работы программы.");
+    } catch (NoSuchElementException e) {
+      System.out.println("Нажата комбинация CTRL+D. Завершение работы программы.");
       System.exit(0);
     }
   }

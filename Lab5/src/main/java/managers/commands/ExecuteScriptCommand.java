@@ -8,13 +8,40 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import managers.*;
 
+/**
+ * Класс, отвечающий за команду "execute_script".
+ *
+ * <p>Описание команды: "Считать и исполнить скрипт из указанного файла".
+ *
+ * <p>Принимает на вход один обязательный аргумент - путь к файлу со скриптом (тип {@code String}).
+ *
+ * @see Command
+ * @author Alvas
+ * @since 1.0
+ */
 public class ExecuteScriptCommand implements Command {
-  private CollectionManager collectionManager;
+  private final CollectionManager collectionManager;
 
+  /**
+   * Конструктор команды.
+   *
+   * @param collectionManager менеджер коллекции.
+   * @see CollectionManager
+   * @author Alvas
+   * @since 1.0
+   */
   public ExecuteScriptCommand(CollectionManager collectionManager) {
     this.collectionManager = collectionManager;
   }
 
+  /**
+   * Исполняет команду с заданными параметрами.
+   *
+   * @param args аргументы команды.
+   * @throws CommandExecuteException если указано неверное количество аргументов команды.
+   * @author Alvas
+   * @since 1.0
+   */
   @Override
   public void execute(String[] args) throws CommandExecuteException {
     if (args.length != 2) {
@@ -24,6 +51,7 @@ public class ExecuteScriptCommand implements Command {
     String fileName = args[1];
     FileManager fileManager = new FileManager(fileName, collectionManager);
     CommandManager commandManager = new CommandManager(collectionManager);
+    boolean recursionFlag = false;
     if (!fileManager.canRead()) {
       throw new CommandExecuteException("Невозможно прочитать информацию из файла.");
     }
@@ -33,8 +61,16 @@ public class ExecuteScriptCommand implements Command {
       ScriptManager.addPath(fileName);
       Scanner currentScanner;
 
-      while ((currentScanner = ScriptManager.getLastScanner()) != null) {
-        ScannerManager.setScanner(currentScanner);
+      while (true) {
+        currentScanner = ScriptManager.getLastScanner();
+        if (currentScanner.hasNextLine()) {
+          ScannerManager.setScanner(currentScanner);
+        } else {
+          ScriptManager.removePath();
+          ScannerManager.setScanner(ScriptManager.getLastScanner());
+          currentScanner = ScriptManager.getLastScanner();
+        }
+
         String input = currentScanner.nextLine();
         String[] commandParts = input.trim().split(" ");
 
@@ -43,6 +79,7 @@ public class ExecuteScriptCommand implements Command {
           System.out.println(
               "Обнаружена рекурсия! Отмена скрипта! Повторно вызывается файл "
                   + new File(commandParts[1]).getAbsolutePath());
+          recursionFlag = true;
           continue;
         }
 
@@ -51,23 +88,41 @@ public class ExecuteScriptCommand implements Command {
           commandManager.startExecuting(input);
         } catch (UnknownCommandException e) {
           System.out.println(e.getMessage());
+        } catch (NoSuchElementException e) {
+          currentScanner = new Scanner(System.in);
+          ScannerManager.setScanner(currentScanner);
         }
       }
     } catch (FileNotFoundException e) {
       System.out.println(e.getMessage());
-    } catch (NoSuchElementException e) {
-      System.out.println("Скрипт выполнен!");
-      ScriptManager.removePath();
-      ScannerManager.setScanner(new Scanner(System.in));
+    } catch (NoSuchElementException ignored) {
+    } finally {
       ScriptManager.deactivateFileMode();
+      if (!recursionFlag) {
+        System.out.println("Скрипт " + args[1] + " выполнен!");
+      }
     }
   }
 
+  /**
+   * Возвращает название команды.
+   *
+   * @return Название команды.
+   * @author Alvas
+   * @since 1.0
+   */
   @Override
   public String getName() {
     return "execute_script";
   }
 
+  /**
+   * Возвращает описание команды.
+   *
+   * @return Описание команды.
+   * @author Alvas
+   * @since 1.0
+   */
   @Override
   public String getDescription() {
     return "считать и исполнить скрипт из указанного файла";

@@ -5,9 +5,28 @@ import exceptions.UnknownCommandException;
 import java.util.LinkedHashMap;
 import managers.commands.*;
 
+/**
+ * Класс, отвечающий за связь между командами и {@link CollectionManager}.
+ *
+ * @see CollectionManager
+ * @author Alvas
+ * @since 1.0
+ */
 public class CommandManager {
   private final LinkedHashMap<String, Command> commandList;
 
+  /**
+   * Конструктор менеджера команд.
+   *
+   * <p>Создает коллекцию {@link LinkedHashMap} для хранения всех команд и помещает туда все
+   * существующие.
+   *
+   * @param collectionManager менеджер коллекции {@link CollectionManager}.
+   * @see CollectionManager
+   * @see LinkedHashMap
+   * @author Alvas
+   * @since 1.0
+   */
   public CommandManager(CollectionManager collectionManager) {
     commandList = new LinkedHashMap<>();
     commandList.put("help", new HelpCommand(collectionManager));
@@ -28,6 +47,15 @@ public class CommandManager {
     commandList.put("average_of_price", new AverageOfPriceCommand(collectionManager));
   }
 
+  /**
+   * Начинает исполнять заданную команду {@link Command}.
+   *
+   * @param line команда с аргументами.
+   * @see Command
+   * @throws UnknownCommandException если заданной команды не существует.
+   * @author Alvas
+   * @since 1.0
+   */
   public void startExecuting(String line) throws UnknownCommandException {
     String commandName = line.strip().split(" ")[0];
     if (!commandList.containsKey(commandName)) {
@@ -41,6 +69,14 @@ public class CommandManager {
     }
   }
 
+  /**
+   * Возвращает все существующие команды в виде {@link LinkedHashMap}.
+   *
+   * @return Все существующие команды.
+   * @see LinkedHashMap
+   * @author Alvas
+   * @since 1.0
+   */
   public LinkedHashMap<String, Command> getCommandList() {
     return commandList;
   }
