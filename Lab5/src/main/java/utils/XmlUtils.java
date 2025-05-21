@@ -13,7 +13,7 @@ public final class XmlUtils {
   /**
    * Возвращает строку из указанного тега XML-элемента.
    *
-   * <p>Возвращает пустую строку при пустом значении.</p>
+   * <p>Возвращает пустую строку при пустом значении.
    *
    * @param element XML-элемент {@link Element}.
    * @param tagName имя XML-тега.
@@ -33,7 +33,7 @@ public final class XmlUtils {
   /**
    * Возвращает целое число типа {@code Integer} из указанного тега XML-элемента.
    *
-   * <p>Возвращает {@code null} при пустом значении.</p>
+   * <p>Возвращает {@code null} при пустом значении.
    *
    * @param element XML-элемент {@link Element}.
    * @param tagName имя XML-тега.
@@ -53,7 +53,7 @@ public final class XmlUtils {
   /**
    * Возвращает целое число типа {@code Long} из указанного тега XML-элемента.
    *
-   * <p>Возвращает {@code null} при пустом значении.</p>
+   * <p>Возвращает {@code null} при пустом значении.
    *
    * @param element XML-элемент {@link Element}.
    * @param tagName имя XML-тега.
@@ -73,7 +73,7 @@ public final class XmlUtils {
   /**
    * Возвращает дробное число типа {@code Float} из указанного тега XML-элемента.
    *
-   * <p>Возвращает {@code null} при пустом значении.</p>
+   * <p>Возвращает {@code null} при пустом значении.
    *
    * @param element XML-элемент {@link Element}.
    * @param tagName имя XML-тега.
@@ -93,7 +93,7 @@ public final class XmlUtils {
   /**
    * Возвращает дробное число типа {@code Double} из указанного тега XML-элемента.
    *
-   * <p>Возвращает {@code null} при пустом значении.</p>
+   * <p>Возвращает {@code null} при пустом значении.
    *
    * @param element XML-элемент {@link Element}.
    * @param tagName имя XML-тега.

@@ -4,6 +4,7 @@ import data.Ticket;
 import exceptions.CommandExecuteException;
 import exceptions.ObjectCreationException;
 import managers.CollectionManager;
+import managers.IdManager;
 import utils.generators.TicketGenerator;
 
 /**
@@ -53,6 +54,7 @@ public class UpdateCommand implements Command {
       Ticket ticket = new TicketGenerator().create();
       collectionManager.updateTicket(id, ticket);
       System.out.println("Элемент с id=" + id + " обновлен.");
+      IdManager.removeLastId();
     } catch (NumberFormatException | ObjectCreationException e) {
       System.out.println("id должен быть целым числом.");
     }

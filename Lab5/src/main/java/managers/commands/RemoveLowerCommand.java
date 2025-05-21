@@ -5,6 +5,7 @@ import exceptions.CommandExecuteException;
 import exceptions.ObjectCreationException;
 import exceptions.RemoveException;
 import managers.CollectionManager;
+import managers.IdManager;
 import utils.generators.TicketGenerator;
 
 /**
@@ -58,6 +59,7 @@ public class RemoveLowerCommand implements Command {
           "Удалено "
               + (size - collectionManager.getCollectionSize())
               + " элементов, меньших заданного.");
+      IdManager.removeLastId();
     } catch (RemoveException | ObjectCreationException e) {
       System.out.println(e.getMessage());
     }

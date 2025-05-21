@@ -53,7 +53,8 @@ public final class IdManager {
    * Проверяет значение {@code id} на уникальность.
    *
    * @param id значение для проверки.
-   * @return {@code true} - если значение {@code id} еще не использовалось, {@code false} - если уже использовалось.
+   * @return {@code true} - если значение {@code id} еще не использовалось, {@code false} - если уже
+   *     использовалось.
    * @author Alvas
    * @since 1.0
    */
