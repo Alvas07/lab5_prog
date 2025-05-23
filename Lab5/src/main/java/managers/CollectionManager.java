@@ -261,15 +261,7 @@ public class CollectionManager {
       throw new EmptyCollectionException("Невозможно найти максимальный элемент.");
     }
 
-    Ticket ticket = null;
-    for (Ticket t : collection) {
-      if (ticket == null) {
-        ticket = t;
-      } else if (ticket.compareToByDate(t) < 0) {
-        ticket = t;
-      }
-    }
-    return ticket;
+    return collection.stream().max(Ticket::compareToByDate).orElse(null);
   }
 
   /**
