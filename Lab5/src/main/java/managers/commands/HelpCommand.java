@@ -4,6 +4,7 @@ import exceptions.CommandExecuteException;
 import java.util.LinkedHashMap;
 import managers.CollectionManager;
 import managers.CommandManager;
+import managers.FileManager;
 
 /**
  * Класс, отвечающий за команду "help".
@@ -41,7 +42,8 @@ public class HelpCommand implements Command {
    */
   @Override
   public void execute(String[] args) throws CommandExecuteException {
-    CommandManager commandManager = new CommandManager(collectionManager);
+    CommandManager commandManager =
+        new CommandManager(collectionManager, new FileManager("", collectionManager));
     LinkedHashMap<String, Command> commandList = commandManager.getCommandList();
     System.out.println("ДОСТУПНЫЕ КОМАНДЫ:");
     for (String commandName : commandList.keySet()) {

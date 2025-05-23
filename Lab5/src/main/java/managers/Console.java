@@ -21,8 +21,6 @@ import managers.commands.Command;
  * @since 1.0
  */
 public class Console {
-  public static String DATA_PATH;
-
   /**
    * Запускает работу приложения.
    *
@@ -33,12 +31,11 @@ public class Console {
   public void start(String[] args) {
     Scanner scanner = ScannerManager.getScanner();
     CollectionManager collectionManager = new CollectionManager();
-    CommandManager commandManager = new CommandManager(collectionManager);
+    FileManager fileManager = new FileManager(args[0], collectionManager);
+    CommandManager commandManager = new CommandManager(collectionManager, fileManager);
     try {
       System.out.println("Загрузка информации о коллекции из файла...");
-      FileManager fileManager = new FileManager(args[0], collectionManager);
       fileManager.fillCollectionFromXml();
-      DATA_PATH = args[0];
       System.out.println("Загрузка прошла успешно!");
     } catch (FileReadException e) {
       System.out.println(e.getMessage());

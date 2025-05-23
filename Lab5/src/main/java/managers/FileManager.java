@@ -40,6 +40,17 @@ public class FileManager {
   }
 
   /**
+   * Возвращает путь до используемого файла.
+   *
+   * @return Путь до используемого файла.
+   * @author Alvas
+   * @since 2.0
+   */
+  public String getFileName() {
+    return fileName;
+  }
+
+  /**
    * Показывает возможность чтения из файла.
    *
    * @return {@code true} - если файл доступен для чтения, {@code false} - если нет.

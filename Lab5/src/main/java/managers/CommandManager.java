@@ -22,12 +22,14 @@ public class CommandManager {
    * существующие.
    *
    * @param collectionManager менеджер коллекции {@link CollectionManager}.
+   * @param fileManager файловый менеджер {@link FileManager}.
    * @see CollectionManager
+   * @see FileManager
    * @see LinkedHashMap
    * @author Alvas
-   * @since 1.0
+   * @since 2.0
    */
-  public CommandManager(CollectionManager collectionManager) {
+  public CommandManager(CollectionManager collectionManager, FileManager fileManager) {
     commandList = new LinkedHashMap<>();
     commandList.put("help", new HelpCommand(collectionManager));
     commandList.put("info", new InfoCommand(collectionManager));
@@ -36,8 +38,8 @@ public class CommandManager {
     commandList.put("update", new UpdateCommand(collectionManager));
     commandList.put("remove_by_id", new RemoveByIdCommand(collectionManager));
     commandList.put("clear", new ClearCommand(collectionManager));
-    commandList.put("save", new SaveCommand(collectionManager));
-    commandList.put("execute_script", new ExecuteScriptCommand(collectionManager));
+    commandList.put("save", new SaveCommand(fileManager));
+    commandList.put("execute_script", new ExecuteScriptCommand(collectionManager, fileManager));
     commandList.put("exit", new ExitCommand());
     commandList.put("remove_head", new RemoveHeadCommand(collectionManager));
     commandList.put("remove_lower", new RemoveLowerCommand(collectionManager));

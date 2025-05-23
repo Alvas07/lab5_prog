@@ -2,8 +2,6 @@ package managers.commands;
 
 import exceptions.CommandExecuteException;
 import exceptions.FileWriteException;
-import managers.CollectionManager;
-import managers.Console;
 import managers.FileManager;
 
 /**
@@ -18,18 +16,18 @@ import managers.FileManager;
  * @since 1.0
  */
 public class SaveCommand implements Command {
-  private final CollectionManager collectionManager;
+  private final FileManager fileManager;
 
   /**
    * Конструктор команды.
    *
-   * @param collectionManager менеджер коллекции.
-   * @see CollectionManager
+   * @param fileManager файловый менеджер.
+   * @see FileManager
    * @author Alvas
-   * @since 1.0
+   * @since 2.0
    */
-  public SaveCommand(CollectionManager collectionManager) {
-    this.collectionManager = collectionManager;
+  public SaveCommand(FileManager fileManager) {
+    this.fileManager = fileManager;
   }
 
   /**
@@ -47,9 +45,8 @@ public class SaveCommand implements Command {
     }
 
     try {
-      FileManager fileManager = new FileManager(Console.DATA_PATH, collectionManager);
       fileManager.saveCollectionToXml();
-      System.out.println("Коллекция сохранена в файл " + Console.DATA_PATH);
+      System.out.println("Коллекция сохранена в файл " + fileManager.getFileName());
     } catch (FileWriteException e) {
       System.out.println(e.getMessage());
     }
