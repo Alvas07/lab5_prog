@@ -70,10 +70,10 @@ public abstract class ObjectGenerator<T> {
       if (fileMode) {
         System.out.println(input);
       }
-      if (validator.test(input)) {
-        return input;
-      } else if (input.isEmpty() && validator.test("")) {
+      if (input.isEmpty() && validator.test("")) {
         return null;
+      } else if (validator.test(input)) {
+        return input;
       }
       if (fileMode) {
         throw new ObjectCreationException("Неверный формат ввода.");
