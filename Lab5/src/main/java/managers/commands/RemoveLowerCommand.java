@@ -59,9 +59,12 @@ public class RemoveLowerCommand implements Command {
           "Удалено "
               + (size - collectionManager.getCollectionSize())
               + " элементов, меньших заданного.");
-      IdManager.removeLastId();
+      for (int i = 0; i < size - collectionManager.getCollectionSize(); i++) {
+        IdManager.removeLastId();
+      }
     } catch (RemoveException | ObjectCreationException e) {
       System.out.println(e.getMessage());
+      IdManager.removeLastId();
     }
   }
 

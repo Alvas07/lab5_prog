@@ -68,6 +68,7 @@ public class AddIfMaxCommand implements Command {
       }
     } catch (WrongArgumentException | ObjectCreationException e) {
       System.out.println(e.getMessage());
+      IdManager.removeLastId();
     }
   }
 

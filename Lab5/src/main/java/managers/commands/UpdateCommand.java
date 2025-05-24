@@ -57,6 +57,7 @@ public class UpdateCommand implements Command {
       IdManager.removeLastId();
     } catch (NumberFormatException | ObjectCreationException e) {
       System.out.println("id должен быть целым числом.");
+      IdManager.removeLastId();
     }
   }
 
