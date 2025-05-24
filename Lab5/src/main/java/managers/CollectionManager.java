@@ -135,6 +135,24 @@ public class CollectionManager {
   }
 
   /**
+   * Заполняет коллекцию всеми элементами {@link Ticket} из списка.
+   *
+   * @param tickets список элементов для добавления.
+   * @see Ticket
+   * @author Alvas
+   * @since 2.0
+   */
+  public void fillCollection(List<Ticket> tickets) {
+    for (Ticket ticket : tickets) {
+      try {
+        addTicket(ticket);
+      } catch (WrongArgumentException e) {
+        System.out.println(e.getMessage());
+      }
+    }
+  }
+
+  /**
    * Возвращает элемент {@link Ticket} коллекции по заданному {@code id}.
    *
    * @param id уникальный идентификатор элемента.

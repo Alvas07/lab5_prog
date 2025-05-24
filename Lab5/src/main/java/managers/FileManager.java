@@ -3,7 +3,6 @@ package managers;
 import data.Ticket;
 import exceptions.FileReadException;
 import exceptions.FileWriteException;
-import exceptions.WrongArgumentException;
 import java.util.List;
 import system.io.XmlReader;
 import system.io.XmlWriter;
@@ -84,13 +83,7 @@ public class FileManager {
    */
   public void fillCollectionFromXml() throws FileReadException {
     List<Ticket> tickets = reader.readTickets(fileName);
-    for (Ticket ticket : tickets) {
-      try {
-        collectionManager.addTicket(ticket);
-      } catch (WrongArgumentException e) {
-        System.out.println(e.getMessage());
-      }
-    }
+    collectionManager.fillCollection(tickets);
   }
 
   /**
