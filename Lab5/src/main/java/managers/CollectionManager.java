@@ -31,16 +31,17 @@ public class CollectionManager {
    *
    * <p>Создает коллекцию, устанавливает время инициализации и последней модификации.
    *
-   * <p>Для работы с временем использует класс {@link DateTimeUtils}.
+   * <p>Время берет из системных параметров файла.
    *
-   * @see DateTimeUtils
+   * @param fileManager файловый менеджер.
+   * @see FileManager
    * @author Alvas
-   * @since 1.0
+   * @since 2.0
    */
-  public CollectionManager() {
+  public CollectionManager(FileManager fileManager) {
     this.collection = new ArrayDeque<>();
-    this.initializationTime = DateTimeUtils.getStartTime();
-    this.lastUpdateTime = DateTimeUtils.getCurrentTime();
+    this.initializationTime = fileManager.getFileCreationTime();
+    this.lastUpdateTime = fileManager.getFileLastModifiedTime();
   }
 
   /**

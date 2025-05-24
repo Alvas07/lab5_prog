@@ -39,7 +39,7 @@ public class CommandManager {
     commandList.put("update", new UpdateCommand(collectionManager));
     commandList.put("remove_by_id", new RemoveByIdCommand(collectionManager));
     commandList.put("clear", new ClearCommand(collectionManager));
-    commandList.put("save", new SaveCommand(fileManager));
+    commandList.put("save", new SaveCommand(fileManager, collectionManager));
     commandList.put(
         "execute_script", new ExecuteScriptCommand(collectionManager, fileManager, console));
     commandList.put("exit", new ExitCommand(console));

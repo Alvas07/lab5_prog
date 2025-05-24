@@ -3,6 +3,12 @@ package managers;
 import data.Ticket;
 import exceptions.FileReadException;
 import exceptions.FileWriteException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.attribute.FileTime;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import system.io.XmlReader;
 import system.io.XmlWriter;
@@ -20,7 +26,6 @@ import system.io.XmlWriter;
  */
 public class FileManager {
   private final String fileName;
-  private final CollectionManager collectionManager;
   private final XmlReader reader = new XmlReader();
   private final XmlWriter writer = new XmlWriter();
 
@@ -28,14 +33,12 @@ public class FileManager {
    * Конструктор файлового менеджера.
    *
    * @param fileName путь к файлу.
-   * @param collectionManager менеджер коллекции {@link CommandManager}.
    * @see CollectionManager
    * @author Alvas
-   * @since 1.0
+   * @since 2.0
    */
-  public FileManager(String fileName, CollectionManager collectionManager) {
+  public FileManager(String fileName) {
     this.fileName = fileName;
-    this.collectionManager = collectionManager;
   }
 
   /**
@@ -47,6 +50,40 @@ public class FileManager {
    */
   public String getFileName() {
     return fileName;
+  }
+
+  /**
+   * Возвращает время создания используемого файла.
+   *
+   * @return Время создания файла.
+   * @author Alvas
+   * @since 2.0
+   */
+  public LocalDateTime getFileCreationTime() {
+    try {
+      FileTime time = (FileTime) Files.getAttribute(Paths.get(fileName), "creationTime");
+      return LocalDateTime.ofInstant(time.toInstant(), ZoneId.systemDefault());
+    } catch (IOException e) {
+      System.out.println("Невозможно прочитать время создания файла.");
+      return null;
+    }
+  }
+
+  /**
+   * Возвращает время последней модификации используемого файла.
+   *
+   * @return Время последней модификации файла.
+   * @author Alvas
+   * @since 2.0
+   */
+  public LocalDateTime getFileLastModifiedTime() {
+    try {
+      FileTime time = Files.getLastModifiedTime(Paths.get(fileName));
+      return LocalDateTime.ofInstant(time.toInstant(), ZoneId.systemDefault());
+    } catch (IOException e) {
+      System.out.println("Невозможно прочитать время создания файла.");
+      return null;
+    }
   }
 
   /**
@@ -81,7 +118,7 @@ public class FileManager {
    * @author Alvas
    * @since 1.0
    */
-  public void fillCollectionFromXml() throws FileReadException {
+  public void fillCollectionFromXml(CollectionManager collectionManager) throws FileReadException {
     List<Ticket> tickets = reader.readTickets(fileName);
     collectionManager.fillCollection(tickets);
   }
@@ -95,7 +132,7 @@ public class FileManager {
    * @author Alvas
    * @since 1.0
    */
-  public void saveCollectionToXml() throws FileWriteException {
+  public void saveCollectionToXml(CollectionManager collectionManager) throws FileWriteException {
     writer.writeTicketsToFile(fileName, collectionManager.getTicketsList());
   }
 }

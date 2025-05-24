@@ -43,7 +43,7 @@ public class HelpCommand implements Command {
   @Override
   public void execute(String[] args) throws CommandExecuteException {
     CommandManager commandManager =
-        new CommandManager(collectionManager, new FileManager("", collectionManager), null);
+        new CommandManager(collectionManager, new FileManager(""), null);
     LinkedHashMap<String, Command> commandList = commandManager.getCommandList();
     System.out.println("ДОСТУПНЫЕ КОМАНДЫ:");
     for (String commandName : commandList.keySet()) {

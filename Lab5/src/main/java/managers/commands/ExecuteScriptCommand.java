@@ -57,7 +57,7 @@ public class ExecuteScriptCommand implements Command {
     }
 
     String fileName = args[1];
-    FileManager scriptFileManager = new FileManager(fileName, collectionManager);
+    FileManager scriptFileManager = new FileManager(fileName);
     CommandManager commandManager = new CommandManager(collectionManager, dataFileManager, console);
     ScannerManager scannerManager = console.getScannerManager();
     boolean recursionFlag = false;

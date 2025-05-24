@@ -66,12 +66,12 @@ public class Console {
    */
   public void start(String[] args) {
     Scanner scanner = scannerManager.getScanner();
-    CollectionManager collectionManager = new CollectionManager();
-    FileManager fileManager = new FileManager(args[0], collectionManager);
+    FileManager fileManager = new FileManager(args[0]);
+    CollectionManager collectionManager = new CollectionManager(fileManager);
     CommandManager commandManager = new CommandManager(collectionManager, fileManager, this);
     try {
       System.out.println("Загрузка информации о коллекции из файла...");
-      fileManager.fillCollectionFromXml();
+      fileManager.fillCollectionFromXml(collectionManager);
       System.out.println("Загрузка прошла успешно!");
     } catch (FileReadException e) {
       System.out.println(e.getMessage());
