@@ -29,7 +29,8 @@ public class CommandManager {
    * @author Alvas
    * @since 2.0
    */
-  public CommandManager(CollectionManager collectionManager, FileManager fileManager) {
+  public CommandManager(
+      CollectionManager collectionManager, FileManager fileManager, Console console) {
     commandList = new LinkedHashMap<>();
     commandList.put("help", new HelpCommand(collectionManager));
     commandList.put("info", new InfoCommand(collectionManager));
@@ -39,8 +40,9 @@ public class CommandManager {
     commandList.put("remove_by_id", new RemoveByIdCommand(collectionManager));
     commandList.put("clear", new ClearCommand(collectionManager));
     commandList.put("save", new SaveCommand(fileManager));
-    commandList.put("execute_script", new ExecuteScriptCommand(collectionManager, fileManager));
-    commandList.put("exit", new ExitCommand());
+    commandList.put(
+        "execute_script", new ExecuteScriptCommand(collectionManager, fileManager, console));
+    commandList.put("exit", new ExitCommand(console));
     commandList.put("remove_head", new RemoveHeadCommand(collectionManager));
     commandList.put("remove_lower", new RemoveLowerCommand(collectionManager));
     commandList.put("max_by_creation_date", new MaxByCreationDateCommand(collectionManager));

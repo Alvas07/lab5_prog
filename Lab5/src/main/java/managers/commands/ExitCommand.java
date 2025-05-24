@@ -1,6 +1,7 @@
 package managers.commands;
 
 import exceptions.CommandExecuteException;
+import managers.Console;
 
 /**
  * Класс, отвечающий за команду "exit".
@@ -14,6 +15,19 @@ import exceptions.CommandExecuteException;
  * @since 1.0
  */
 public class ExitCommand implements Command {
+  private final Console console;
+
+  /**
+   * Конструктор команды.
+   *
+   * @param console консоль, управляющая работой приложения.
+   * @author Alvas
+   * @since 2.0
+   */
+  public ExitCommand(Console console) {
+    this.console = console;
+  }
+
   /**
    * Исполняет команду с заданными параметрами.
    *
@@ -28,8 +42,8 @@ public class ExitCommand implements Command {
       throw new CommandExecuteException("Команда не принимает аргументы.");
     }
 
-    System.out.println("Завершение работы програмы.");
-    System.exit(0);
+    System.out.println("Завершение работы программы.");
+    console.stop();
   }
 
   /**

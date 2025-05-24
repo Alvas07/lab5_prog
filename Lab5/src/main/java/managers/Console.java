@@ -21,6 +21,29 @@ import managers.commands.Command;
  * @since 1.0
  */
 public class Console {
+  private boolean isRunning = true;
+
+  /**
+   * Показывает, работает ли приложение в данный момент.
+   *
+   * @return {@code true} - если приложение работает в данный момент, {@code false} - если нет.
+   * @author Alvas
+   * @since 2.0
+   */
+  public boolean isRunning() {
+    return isRunning;
+  }
+
+  /**
+   * Завершает работу приложения.
+   *
+   * @author Alvas
+   * @since 2.0
+   */
+  public void stop() {
+    isRunning = false;
+  }
+
   /**
    * Запускает работу приложения.
    *
@@ -32,7 +55,7 @@ public class Console {
     Scanner scanner = ScannerManager.getScanner();
     CollectionManager collectionManager = new CollectionManager();
     FileManager fileManager = new FileManager(args[0], collectionManager);
-    CommandManager commandManager = new CommandManager(collectionManager, fileManager);
+    CommandManager commandManager = new CommandManager(collectionManager, fileManager, this);
     try {
       System.out.println("Загрузка информации о коллекции из файла...");
       fileManager.fillCollectionFromXml();
@@ -45,7 +68,8 @@ public class Console {
     System.out.println("Добро пожаловать в приложение для управления коллекцией билетов!");
     System.out.println("Для справки введите: help");
     try {
-      while (true) {
+      while (isRunning) {
+        System.out.print("> ");
         String command = scanner.nextLine().trim();
         if (!command.isEmpty()) {
           try {
@@ -57,7 +81,7 @@ public class Console {
       }
     } catch (NoSuchElementException e) {
       System.out.println("Нажата комбинация CTRL+D. Завершение работы программы.");
-      System.exit(0);
+      stop();
     }
   }
 }

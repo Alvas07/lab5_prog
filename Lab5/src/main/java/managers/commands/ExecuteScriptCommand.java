@@ -22,20 +22,24 @@ import managers.*;
 public class ExecuteScriptCommand implements Command {
   private final CollectionManager collectionManager;
   private final FileManager dataFileManager;
+  private final Console console;
 
   /**
    * Конструктор команды.
    *
    * @param collectionManager менеджер коллекции.
    * @param dataFileManager менеджер файла с исходными данными.
+   * @param console консоль, управляющая работой приложения.
    * @see CollectionManager
    * @see FileManager
    * @author Alvas
    * @since 2.0
    */
-  public ExecuteScriptCommand(CollectionManager collectionManager, FileManager dataFileManager) {
+  public ExecuteScriptCommand(
+      CollectionManager collectionManager, FileManager dataFileManager, Console console) {
     this.collectionManager = collectionManager;
     this.dataFileManager = dataFileManager;
+    this.console = console;
   }
 
   /**
@@ -54,7 +58,7 @@ public class ExecuteScriptCommand implements Command {
 
     String fileName = args[1];
     FileManager scriptFileManager = new FileManager(fileName, collectionManager);
-    CommandManager commandManager = new CommandManager(collectionManager, dataFileManager);
+    CommandManager commandManager = new CommandManager(collectionManager, dataFileManager, console);
     boolean recursionFlag = false;
     if (!scriptFileManager.canRead()) {
       throw new CommandExecuteException("Невозможно прочитать информацию из файла.");
