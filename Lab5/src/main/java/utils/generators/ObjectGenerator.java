@@ -4,7 +4,6 @@ import exceptions.ObjectCreationException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.function.Predicate;
-import managers.ScannerManager;
 import managers.ScriptManager;
 
 /**
@@ -16,7 +15,7 @@ import managers.ScriptManager;
  * @since 1.0
  */
 public abstract class ObjectGenerator<T> {
-  private Scanner scanner = ScannerManager.getScanner();
+  private Scanner scanner;
 
   /**
    * Абстрактный метод для генерации объекта класса {@link T}.

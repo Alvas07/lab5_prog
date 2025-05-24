@@ -5,15 +5,24 @@ import java.util.Scanner;
 /**
  * Класс, отвечающий за взаимодействие со сканерами.
  *
- * <p>По умолчанию устанавливает сканер из командной строки {@link System#in}.
- *
  * @see Scanner
- * @see System#in
  * @author Alvas
  * @since 1.0
  */
 public class ScannerManager {
-  private static Scanner scanner = new Scanner(System.in);
+  private Scanner scanner;
+
+  /**
+   * Конструктор менеджера сканеров.
+   *
+   * @param scanner используемый сканер.
+   * @see Scanner
+   * @author Alvas
+   * @since 2.0
+   */
+  public ScannerManager(Scanner scanner) {
+    this.scanner = scanner;
+  }
 
   /**
    * Возвращает текущий установленный в программе сканер.
@@ -22,7 +31,7 @@ public class ScannerManager {
    * @author Alvas
    * @since 1.0
    */
-  public static Scanner getScanner() {
+  public Scanner getScanner() {
     return scanner;
   }
 
@@ -33,7 +42,7 @@ public class ScannerManager {
    * @author Alvas
    * @since 1.0
    */
-  public static void setScanner(Scanner scanner) {
-    ScannerManager.scanner = scanner;
+  public void setScanner(Scanner scanner) {
+    this.scanner = scanner;
   }
 }

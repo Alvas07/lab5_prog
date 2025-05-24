@@ -22,6 +22,19 @@ import managers.commands.Command;
  */
 public class Console {
   private boolean isRunning = true;
+  private final ScannerManager scannerManager = new ScannerManager(new Scanner(System.in));
+
+  /**
+   * Возвращает используемый менеджер сканеров {@link ScannerManager}.
+   *
+   * @return Менеджер сканеров.
+   * @see ScannerManager
+   * @author Alvas
+   * @since 2.0
+   */
+  public ScannerManager getScannerManager() {
+    return scannerManager;
+  }
 
   /**
    * Показывает, работает ли приложение в данный момент.
@@ -52,7 +65,7 @@ public class Console {
    * @since 1.0
    */
   public void start(String[] args) {
-    Scanner scanner = ScannerManager.getScanner();
+    Scanner scanner = scannerManager.getScanner();
     CollectionManager collectionManager = new CollectionManager();
     FileManager fileManager = new FileManager(args[0], collectionManager);
     CommandManager commandManager = new CommandManager(collectionManager, fileManager, this);

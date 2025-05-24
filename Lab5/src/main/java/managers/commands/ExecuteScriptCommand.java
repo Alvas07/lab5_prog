@@ -59,6 +59,7 @@ public class ExecuteScriptCommand implements Command {
     String fileName = args[1];
     FileManager scriptFileManager = new FileManager(fileName, collectionManager);
     CommandManager commandManager = new CommandManager(collectionManager, dataFileManager, console);
+    ScannerManager scannerManager = console.getScannerManager();
     boolean recursionFlag = false;
     if (!scriptFileManager.canRead()) {
       throw new CommandExecuteException("Невозможно прочитать информацию из файла.");
@@ -72,10 +73,10 @@ public class ExecuteScriptCommand implements Command {
       while (true) {
         currentScanner = ScriptManager.getLastScanner();
         if (currentScanner.hasNextLine()) {
-          ScannerManager.setScanner(currentScanner);
+          scannerManager.setScanner(currentScanner);
         } else {
           ScriptManager.removePath();
-          ScannerManager.setScanner(ScriptManager.getLastScanner());
+          scannerManager.setScanner(ScriptManager.getLastScanner());
           currentScanner = ScriptManager.getLastScanner();
         }
 
@@ -98,7 +99,7 @@ public class ExecuteScriptCommand implements Command {
           System.out.println(e.getMessage());
         } catch (NoSuchElementException e) {
           currentScanner = new Scanner(System.in);
-          ScannerManager.setScanner(currentScanner);
+          scannerManager.setScanner(currentScanner);
         }
       }
     } catch (FileNotFoundException e) {
