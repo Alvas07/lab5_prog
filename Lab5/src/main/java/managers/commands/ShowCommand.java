@@ -48,6 +48,7 @@ public class ShowCommand implements Command {
     if (collectionManager.getCollectionSize() == 0) {
       System.out.println("Коллекция пуста.");
     } else {
+      System.out.println("ЭЛЕМЕНТЫ КОЛЛЕКЦИИ:");
       collectionManager.getCollection().forEach(System.out::println);
     }
   }
