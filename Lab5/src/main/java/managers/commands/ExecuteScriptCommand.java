@@ -70,7 +70,7 @@ public class ExecuteScriptCommand implements Command {
       ScriptManager.addPath(fileName);
       Scanner currentScanner;
 
-      while (true) {
+      while (!ScriptManager.getAllScanners().isEmpty()) {
         currentScanner = ScriptManager.getLastScanner();
         if (currentScanner.hasNextLine()) {
           scannerManager.setScanner(currentScanner);
