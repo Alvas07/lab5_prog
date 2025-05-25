@@ -23,6 +23,7 @@ public class ExecuteScriptCommand implements Command {
   private final CollectionManager collectionManager;
   private final FileManager dataFileManager;
   private final Console console;
+  private final ScriptManager scriptManager;
 
   /**
    * Конструктор команды.
@@ -40,6 +41,7 @@ public class ExecuteScriptCommand implements Command {
     this.collectionManager = collectionManager;
     this.dataFileManager = dataFileManager;
     this.console = console;
+    this.scriptManager = console.getScriptManager();
   }
 
   /**
@@ -66,25 +68,25 @@ public class ExecuteScriptCommand implements Command {
     }
 
     try {
-      ScriptManager.activateFileMode();
-      ScriptManager.addPath(fileName);
+      scriptManager.activateFileMode();
+      scriptManager.addPath(fileName);
       Scanner currentScanner;
 
-      while (!ScriptManager.getAllScanners().isEmpty()) {
-        currentScanner = ScriptManager.getLastScanner();
+      while (!scriptManager.getAllScanners().isEmpty()) {
+        currentScanner = scriptManager.getLastScanner();
         if (currentScanner.hasNextLine()) {
           scannerManager.setScanner(currentScanner);
         } else {
-          ScriptManager.removePath();
-          scannerManager.setScanner(ScriptManager.getLastScanner());
-          currentScanner = ScriptManager.getLastScanner();
+          scriptManager.removePath();
+          scannerManager.setScanner(scriptManager.getLastScanner());
+          currentScanner = scriptManager.getLastScanner();
         }
 
         String input = currentScanner.nextLine();
         String[] commandParts = input.trim().split(" ");
 
         if (commandParts[0].equalsIgnoreCase("execute_script")
-            && ScriptManager.isRecursive(commandParts[1])) {
+            && scriptManager.isRecursive(commandParts[1])) {
           System.out.println(
               "Обнаружена рекурсия! Отмена скрипта! Повторно вызывается файл "
                   + new File(commandParts[1]).getAbsolutePath());
@@ -106,7 +108,7 @@ public class ExecuteScriptCommand implements Command {
       System.out.println(e.getMessage());
     } catch (NoSuchElementException ignored) {
     } finally {
-      ScriptManager.deactivateFileMode();
+      scriptManager.deactivateFileMode();
       if (!recursionFlag) {
         System.out.println("Скрипт " + args[1] + " выполнен!");
       }

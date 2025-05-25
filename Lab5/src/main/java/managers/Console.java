@@ -23,6 +23,7 @@ import managers.commands.Command;
 public class Console {
   private boolean isRunning = true;
   private final ScannerManager scannerManager = new ScannerManager(new Scanner(System.in));
+  private final ScriptManager scriptManager = new ScriptManager(scannerManager);
 
   /**
    * Возвращает используемый менеджер сканеров {@link ScannerManager}.
@@ -34,6 +35,18 @@ public class Console {
    */
   public ScannerManager getScannerManager() {
     return scannerManager;
+  }
+
+  /**
+   * Возвращает используемый менеджер выполнения скриптов {@link ScriptManager}.
+   *
+   * @return Менеджер выполнения скриптов.
+   * @see ScriptManager
+   * @author Alvas
+   * @since 2.0
+   */
+  public ScriptManager getScriptManager() {
+    return scriptManager;
   }
 
   /**
@@ -82,7 +95,7 @@ public class Console {
     System.out.println("Добро пожаловать в приложение для управления коллекцией билетов!");
     System.out.println("Для справки введите: help");
     try {
-      while (isRunning) {
+      while (isRunning()) {
         System.out.print("> ");
         String command = scanner.nextLine().trim();
         if (!command.isEmpty()) {

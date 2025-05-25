@@ -5,6 +5,8 @@ import exceptions.CommandExecuteException;
 import exceptions.ObjectCreationException;
 import exceptions.WrongArgumentException;
 import managers.CollectionManager;
+import managers.ScannerManager;
+import managers.ScriptManager;
 import utils.generators.TicketGenerator;
 
 /**
@@ -24,17 +26,28 @@ import utils.generators.TicketGenerator;
  */
 public class AddIfMaxCommand implements Command {
   private final CollectionManager collectionManager;
+  private final ScriptManager scriptManager;
+  private final ScannerManager scannerManager;
 
   /**
    * Конструктор команды.
    *
    * @param collectionManager менеджер коллекции.
+   * @param scriptManager менеджер выполнения скриптов.
+   * @param scannerManager менеджер сканеров.
    * @see CollectionManager
+   * @see ScriptManager
+   * @see ScannerManager
    * @author Alvas
-   * @since 1.0
+   * @since 2.0
    */
-  public AddIfMaxCommand(CollectionManager collectionManager) {
+  public AddIfMaxCommand(
+      CollectionManager collectionManager,
+      ScriptManager scriptManager,
+      ScannerManager scannerManager) {
     this.collectionManager = collectionManager;
+    this.scriptManager = scriptManager;
+    this.scannerManager = scannerManager;
   }
 
   /**
@@ -54,7 +67,9 @@ public class AddIfMaxCommand implements Command {
     Ticket maxTicket = collectionManager.getMaxTicket();
 
     try {
-      Ticket ticket = new TicketGenerator(collectionManager.getIdManager()).create();
+      Ticket ticket =
+          new TicketGenerator(collectionManager.getIdManager(), scriptManager, scannerManager)
+              .create();
       if (maxTicket == null || collectionManager.getCollection().isEmpty()) {
         collectionManager.addTicket(ticket);
         System.out.println("Элемент добавлен.");

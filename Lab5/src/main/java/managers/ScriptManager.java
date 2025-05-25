@@ -2,6 +2,7 @@ package managers;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.Stack;
 import managers.commands.ExecuteScriptCommand;
@@ -22,9 +23,28 @@ import managers.commands.ExecuteScriptCommand;
  * @since 1.0
  */
 public class ScriptManager {
-  private static final Stack<String> fileNames = new Stack<>();
-  private static final Stack<Scanner> scanners = new Stack<>();
-  private static boolean fileMode = false;
+  private final Stack<String> fileNames;
+  private final Stack<Scanner> scanners;
+  private boolean fileMode;
+  private final ScannerManager scannerManager;
+
+  /**
+   * Конструктор менеджера выполнения скриптов.
+   *
+   * <p>По умолчанию создает два пустых {@link Stack} для хранения всех запущенных скриптов и
+   * сканеров для них, а также устанавливает флаг {@code fileMode} в значение {@code false}.
+   *
+   * @param scannerManager менеджер сканеров
+   * @see ScannerManager
+   * @author Alvas
+   * @since 2.0
+   */
+  public ScriptManager(ScannerManager scannerManager) {
+    this.fileNames = new Stack<>();
+    this.scanners = new Stack<>();
+    this.fileMode = false;
+    this.scannerManager = scannerManager;
+  }
 
   /**
    * Показывает, является ли скрипт рекурсивным.
@@ -34,7 +54,7 @@ public class ScriptManager {
    * @author Alvas
    * @since 1.0
    */
-  public static boolean isRecursive(String fileName) {
+  public boolean isRecursive(String fileName) {
     return fileNames.contains(new File(fileName).getAbsolutePath());
   }
 
@@ -49,7 +69,7 @@ public class ScriptManager {
    * @author Alvas
    * @since 1.0
    */
-  public static void addPath(String fileName) throws FileNotFoundException {
+  public void addPath(String fileName) throws FileNotFoundException {
     fileNames.push(new File(fileName).getAbsolutePath());
     scanners.push(new Scanner(new File(fileName)));
   }
@@ -63,7 +83,7 @@ public class ScriptManager {
    * @author Alvas
    * @since 1.0
    */
-  public static void removePath() {
+  public void removePath() {
     fileNames.pop();
     scanners.pop();
   }
@@ -75,7 +95,7 @@ public class ScriptManager {
    * @author Alvas
    * @since 1.0
    */
-  public static Scanner getLastScanner() {
+  public Scanner getLastScanner() {
     return scanners.lastElement();
   }
 
@@ -87,7 +107,7 @@ public class ScriptManager {
    * @author Alvas
    * @since 1.0
    */
-  public static Stack<Scanner> getAllScanners() {
+  public Stack<Scanner> getAllScanners() {
     return scanners;
   }
 
@@ -99,7 +119,7 @@ public class ScriptManager {
    * @author Alvas
    * @since 1.0
    */
-  public static boolean getFileMode() {
+  public boolean getFileMode() {
     return fileMode;
   }
 
@@ -109,7 +129,7 @@ public class ScriptManager {
    * @author Alvas
    * @since 1.0
    */
-  public static void activateFileMode() {
+  public void activateFileMode() {
     fileMode = true;
   }
 
@@ -119,7 +139,38 @@ public class ScriptManager {
    * @author Alvas
    * @since 1.0
    */
-  public static void deactivateFileMode() {
+  public void deactivateFileMode() {
     fileMode = false;
+  }
+
+  /**
+   * Выполняет проверку возможности чтения из текущего скрипта.
+   *
+   * <p>Если скрипт заканчивается, то переходит на предыдущий запущенный вплоть до ручного
+   * пользовательского ввода.
+   *
+   * @author Alvas
+   * @since 2.0
+   */
+  public void scriptCheck() {
+    if (fileMode) {
+      try {
+        scannerManager.setScanner(getLastScanner());
+        if (!scannerManager.getScanner().hasNextLine()) {
+          throw new NoSuchElementException();
+        }
+      } catch (NoSuchElementException e) {
+        removePath();
+        if (getAllScanners().isEmpty()) {
+          scannerManager.setScanner(new Scanner(System.in));
+          deactivateFileMode();
+        } else {
+          scannerManager.setScanner(getLastScanner());
+        }
+      }
+    } else {
+      scannerManager.setScanner(new Scanner(System.in));
+      deactivateFileMode();
+    }
   }
 }

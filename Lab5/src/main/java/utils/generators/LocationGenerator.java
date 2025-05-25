@@ -3,6 +3,8 @@ package utils.generators;
 import data.Location;
 import exceptions.ObjectCreationException;
 import java.util.Objects;
+import managers.ScannerManager;
+import managers.ScriptManager;
 
 /**
  * Класс, отвечающий за запрос необходимых данных от пользователя и генерацию объекта класса {@link
@@ -13,6 +15,24 @@ import java.util.Objects;
  * @since 1.0
  */
 public class LocationGenerator extends ObjectGenerator<Location> {
+  private final ScriptManager scriptManager;
+  private final ScannerManager scannerManager;
+
+  /**
+   * Конструктор генератора местоположения.
+   *
+   * @param scriptManager менеджер выполнения скриптов.
+   * @param scannerManager менеджер сканеров.
+   * @see ScriptManager
+   * @see ScannerManager
+   * @author Alvas
+   * @since 2.0
+   */
+  public LocationGenerator(ScriptManager scriptManager, ScannerManager scannerManager) {
+    this.scriptManager = scriptManager;
+    this.scannerManager = scannerManager;
+  }
+
   /**
    * Генерирует объект класса {@link Location}, запрашивая от пользователя значения полей.
    *
@@ -33,16 +53,32 @@ public class LocationGenerator extends ObjectGenerator<Location> {
                         || s.equals("2")
                         || s.equalsIgnoreCase("да")
                         || s.equalsIgnoreCase("нет")),
-                s -> s)
+                s -> s,
+                scriptManager,
+                scannerManager)
             .toLowerCase();
     return switch (choice) {
       case "1", "да" -> {
         System.out.println("Добро пожаловать в Формирователь местоположения.");
         yield new Location(
-            askValue("Местоположение по X (Long, not null): ", Objects::nonNull, Long::parseLong),
-            askValue("Местоположение по Y (Long, not null): ", Objects::nonNull, Long::parseLong),
             askValue(
-                "Местоположение по Z (Integer, not null): ", Objects::nonNull, Integer::parseInt));
+                "Местоположение по X (Long, not null): ",
+                Objects::nonNull,
+                Long::parseLong,
+                scriptManager,
+                scannerManager),
+            askValue(
+                "Местоположение по Y (Long, not null): ",
+                Objects::nonNull,
+                Long::parseLong,
+                scriptManager,
+                scannerManager),
+            askValue(
+                "Местоположение по Z (Integer, not null): ",
+                Objects::nonNull,
+                Integer::parseInt,
+                scriptManager,
+                scannerManager));
       }
       case "2", "нет" -> null;
       default -> throw new ObjectCreationException("Некорректный выбор.");

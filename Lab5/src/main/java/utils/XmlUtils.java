@@ -50,7 +50,7 @@ public final class XmlUtils {
       throws ObjectCreationException {
     try {
       String text = getValue(element, tagName, s -> s);
-      return Enum.valueOf(enumClass, text);
+      return Enum.valueOf(enumClass, text.toUpperCase());
     } catch (IllegalArgumentException | NullPointerException e) {
       throw new ObjectCreationException("Некорректный формат типа.");
     }

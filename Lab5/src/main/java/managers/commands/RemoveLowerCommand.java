@@ -5,6 +5,8 @@ import exceptions.CommandExecuteException;
 import exceptions.ObjectCreationException;
 import exceptions.RemoveException;
 import managers.CollectionManager;
+import managers.ScannerManager;
+import managers.ScriptManager;
 import utils.generators.TicketGenerator;
 
 /**
@@ -23,17 +25,28 @@ import utils.generators.TicketGenerator;
  */
 public class RemoveLowerCommand implements Command {
   private final CollectionManager collectionManager;
+  private final ScriptManager scriptManager;
+  private final ScannerManager scannerManager;
 
   /**
    * Конструктор команды.
    *
    * @param collectionManager менеджер коллекции.
+   * @param scriptManager менеджер выполнения скриптов.
+   * @param scannerManager менеджер сканеров.
    * @see CollectionManager
+   * @see ScriptManager
+   * @see ScannerManager
    * @author Alvas
-   * @since 1.0
+   * @since 2.0
    */
-  public RemoveLowerCommand(CollectionManager collectionManager) {
+  public RemoveLowerCommand(
+      CollectionManager collectionManager,
+      ScriptManager scriptManager,
+      ScannerManager scannerManager) {
     this.collectionManager = collectionManager;
+    this.scriptManager = scriptManager;
+    this.scannerManager = scannerManager;
   }
 
   /**
@@ -52,7 +65,9 @@ public class RemoveLowerCommand implements Command {
 
     int size = collectionManager.getCollectionSize();
     try {
-      Ticket ticket = new TicketGenerator(collectionManager.getIdManager()).create();
+      Ticket ticket =
+          new TicketGenerator(collectionManager.getIdManager(), scriptManager, scannerManager)
+              .create();
       collectionManager.removeLower(ticket);
       System.out.println(
           "Удалено "

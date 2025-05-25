@@ -6,10 +6,9 @@ add
 200
 100
 VIP
-1
-1
-1
-1
-1
-1
+даfff
+12
+12
+12
+не
 execute_script /Users/vladislavdyadev/Programming_Labs/lab5_prog/Lab5/scripts/script2.txt

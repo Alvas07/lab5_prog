@@ -4,6 +4,8 @@ import data.Ticket;
 import exceptions.CommandExecuteException;
 import exceptions.ObjectCreationException;
 import managers.CollectionManager;
+import managers.ScannerManager;
+import managers.ScriptManager;
 import utils.generators.TicketGenerator;
 
 /**
@@ -21,17 +23,28 @@ import utils.generators.TicketGenerator;
  */
 public class UpdateCommand implements Command {
   private final CollectionManager collectionManager;
+  private final ScriptManager scriptManager;
+  private final ScannerManager scannerManager;
 
   /**
    * Конструктор команды.
    *
    * @param collectionManager менеджер коллекции.
+   * @param scriptManager менеджер выполнения скриптов.
+   * @param scannerManager менеджер сканеров.
    * @see CollectionManager
+   * @see ScriptManager
+   * @see ScannerManager
    * @author Alvas
-   * @since 1.0
+   * @since 2.0
    */
-  public UpdateCommand(CollectionManager collectionManager) {
+  public UpdateCommand(
+      CollectionManager collectionManager,
+      ScriptManager scriptManager,
+      ScannerManager scannerManager) {
     this.collectionManager = collectionManager;
+    this.scriptManager = scriptManager;
+    this.scannerManager = scannerManager;
   }
 
   /**
@@ -50,7 +63,9 @@ public class UpdateCommand implements Command {
 
     try {
       int id = Integer.parseInt(args[1]);
-      Ticket ticket = new TicketGenerator(collectionManager.getIdManager()).create();
+      Ticket ticket =
+          new TicketGenerator(collectionManager.getIdManager(), scriptManager, scannerManager)
+              .create();
       collectionManager.updateTicket(id, ticket);
       System.out.println("Элемент с id=" + id + " обновлен.");
     } catch (NumberFormatException | ObjectCreationException e) {

@@ -32,11 +32,16 @@ public class CommandManager {
   public CommandManager(
       CollectionManager collectionManager, FileManager fileManager, Console console) {
     commandList = new LinkedHashMap<>();
-    commandList.put("help", new HelpCommand(collectionManager));
+    commandList.put("help", new HelpCommand(collectionManager, console));
     commandList.put("info", new InfoCommand(collectionManager));
     commandList.put("show", new ShowCommand(collectionManager));
-    commandList.put("add", new AddCommand(collectionManager));
-    commandList.put("update", new UpdateCommand(collectionManager));
+    commandList.put(
+        "add",
+        new AddCommand(collectionManager, console.getScriptManager(), console.getScannerManager()));
+    commandList.put(
+        "update",
+        new UpdateCommand(
+            collectionManager, console.getScriptManager(), console.getScannerManager()));
     commandList.put("remove_by_id", new RemoveByIdCommand(collectionManager));
     commandList.put("clear", new ClearCommand(collectionManager));
     commandList.put("save", new SaveCommand(fileManager, collectionManager));
@@ -44,10 +49,16 @@ public class CommandManager {
         "execute_script", new ExecuteScriptCommand(collectionManager, fileManager, console));
     commandList.put("exit", new ExitCommand(console));
     commandList.put("remove_head", new RemoveHeadCommand(collectionManager));
-    commandList.put("remove_lower", new RemoveLowerCommand(collectionManager));
+    commandList.put(
+        "remove_lower",
+        new RemoveLowerCommand(
+            collectionManager, console.getScriptManager(), console.getScannerManager()));
     commandList.put("max_by_creation_date", new MaxByCreationDateCommand(collectionManager));
     commandList.put("filter_by_type", new FilterByTypeCommand(collectionManager));
-    commandList.put("add_if_max", new AddIfMaxCommand(collectionManager));
+    commandList.put(
+        "add_if_max",
+        new AddIfMaxCommand(
+            collectionManager, console.getScriptManager(), console.getScannerManager()));
     commandList.put("average_of_price", new AverageOfPriceCommand(collectionManager));
   }
 

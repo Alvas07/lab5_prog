@@ -4,6 +4,8 @@ import data.*;
 import exceptions.ObjectCreationException;
 import java.time.LocalDate;
 import managers.IdManager;
+import managers.ScannerManager;
+import managers.ScriptManager;
 
 /**
  * Класс, отвечающий за запрос необходимых данных от пользователя и генерацию объекта класса {@link
@@ -15,17 +17,26 @@ import managers.IdManager;
  */
 public class TicketGenerator extends ObjectGenerator<Ticket> {
   private final IdManager idManager;
+  private final ScriptManager scriptManager;
+  private final ScannerManager scannerManager;
 
   /**
    * Конструктор генератора билетов.
    *
    * @param idManager менеджер {@code id}.
+   * @param scriptManager менеджер выполнения скриптов.
+   * @param scannerManager менеджер сканеров.
    * @see IdManager
+   * @see ScriptManager
+   * @see ScannerManager
    * @author Alvas
    * @since 2.0
    */
-  public TicketGenerator(IdManager idManager) {
+  public TicketGenerator(
+      IdManager idManager, ScriptManager scriptManager, ScannerManager scannerManager) {
     this.idManager = idManager;
+    this.scriptManager = scriptManager;
+    this.scannerManager = scannerManager;
   }
 
   /**
@@ -33,8 +44,7 @@ public class TicketGenerator extends ObjectGenerator<Ticket> {
    *
    * @return Объект класса {@link Ticket}.
    * @see Ticket
-   * @throws ObjectCreationException если происходит ошибка при создании объекта класса {@link
-   *     Ticket}.
+   * @throws ObjectCreationException если происходит ошибка при создании объекта.
    * @author Alvas
    * @since 1.0
    */
@@ -46,10 +56,17 @@ public class TicketGenerator extends ObjectGenerator<Ticket> {
         askValue(
             "Наименование (string, not null, not empty): ",
             x -> (x != null && !x.isEmpty()),
-            s -> s),
+            s -> s,
+            scriptManager,
+            scannerManager),
         askCoordinates(),
         LocalDate.now(),
-        askValue("Стоимость (float, not null, >0): ", x -> (x != null && x > 0), Float::parseFloat),
+        askValue(
+            "Стоимость (float, not null, >0): ",
+            x -> (x != null && x > 0),
+            Float::parseFloat,
+            scriptManager,
+            scannerManager),
         askTicketType(),
         askPerson());
   }
@@ -59,13 +76,11 @@ public class TicketGenerator extends ObjectGenerator<Ticket> {
    *
    * @return Объект класса {@link Coordinates}.
    * @see Coordinates
-   * @throws ObjectCreationException если происходит ошибка при создании объекта класса {@link
-   *     Coordinates}.
    * @author Alvas
    * @since 1.0
    */
-  private Coordinates askCoordinates() throws ObjectCreationException {
-    return new CoordinatesGenerator().create();
+  private Coordinates askCoordinates() {
+    return new CoordinatesGenerator(scriptManager, scannerManager).create();
   }
 
   /**
@@ -73,13 +88,12 @@ public class TicketGenerator extends ObjectGenerator<Ticket> {
    *
    * @return Объект класса {@link Person}.
    * @see Person
-   * @throws ObjectCreationException если происходит ошибка при создании объекта класса {@link
-   *     Person}.
+   * @throws ObjectCreationException если происходит ошибка при создании объекта.
    * @author Alvas
    * @since 1.0
    */
   private Person askPerson() throws ObjectCreationException {
-    return new PersonGenerator().create();
+    return new PersonGenerator(scriptManager, scannerManager).create();
   }
 
   /**
@@ -87,12 +101,11 @@ public class TicketGenerator extends ObjectGenerator<Ticket> {
    *
    * @return Объект перечисления {@link TicketType}.
    * @see TicketType
-   * @throws ObjectCreationException если происходит ошибка при создании объекта перечисления {@link
-   *     TicketType}.
    * @author Alvas
    * @since 1.0
    */
-  private TicketType askTicketType() throws ObjectCreationException {
-    return (TicketType) askEnum("Тип билета: ", TicketType.values(), x -> true);
+  private TicketType askTicketType() {
+    return (TicketType)
+        askEnum("Тип билета: ", TicketType.values(), x -> true, scriptManager, scannerManager);
   }
 }

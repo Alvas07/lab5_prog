@@ -4,6 +4,7 @@ import exceptions.CommandExecuteException;
 import java.util.LinkedHashMap;
 import managers.CollectionManager;
 import managers.CommandManager;
+import managers.Console;
 import managers.FileManager;
 
 /**
@@ -19,17 +20,21 @@ import managers.FileManager;
  */
 public class HelpCommand implements Command {
   private final CollectionManager collectionManager;
+  private final Console console;
 
   /**
    * Конструктор команды.
    *
    * @param collectionManager менеджер коллекции.
+   * @param console консоль, управляющая работой приложения.
    * @see CollectionManager
+   * @see Console
    * @author Alvas
-   * @since 1.0
+   * @since 2.0
    */
-  public HelpCommand(CollectionManager collectionManager) {
+  public HelpCommand(CollectionManager collectionManager, Console console) {
     this.collectionManager = collectionManager;
+    this.console = console;
   }
 
   /**
@@ -43,7 +48,7 @@ public class HelpCommand implements Command {
   @Override
   public void execute(String[] args) throws CommandExecuteException {
     CommandManager commandManager =
-        new CommandManager(collectionManager, new FileManager(""), null);
+        new CommandManager(collectionManager, new FileManager(""), console);
     LinkedHashMap<String, Command> commandList = commandManager.getCommandList();
     System.out.println("ДОСТУПНЫЕ КОМАНДЫ:");
     for (String commandName : commandList.keySet()) {

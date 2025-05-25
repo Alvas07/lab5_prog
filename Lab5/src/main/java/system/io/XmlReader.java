@@ -71,7 +71,7 @@ public class XmlReader implements TicketReader {
             Element element = (Element) node;
             Ticket ticket = parseTicket(element);
             tickets.add(ticket);
-          } catch (ObjectCreationException e) {
+          } catch (Exception e) {
             throw new FileReadException(e.getMessage());
           }
         }
