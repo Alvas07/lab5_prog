@@ -25,12 +25,28 @@ public class PersonGenerator extends ObjectGenerator<Person> {
    */
   @Override
   public Person create() throws ObjectCreationException {
-    System.out.println("Добро пожаловать в Формирователь пассажира.");
-    return new Person(
-        askFloat("Рост (float, not null, >0): ", x -> (x != null && x > 0)),
-        askInteger("Вес (int, not null, >0): ", x -> (x != null && x > 0)),
-        askString("Номер паспорта (string, len<=28): ", x -> x.length() <= 28),
-        askLocation());
+    String choice =
+        askValue(
+                "Добавить пассажира? (1 - Да, 2 - Нет): ",
+                s ->
+                    (s.equals("1")
+                        || s.equals("2")
+                        || s.equalsIgnoreCase("да")
+                        || s.equalsIgnoreCase("нет")),
+                s -> s)
+            .toLowerCase();
+    return switch (choice) {
+      case "1", "да" -> {
+        System.out.println("Добро пожаловать в Формирователь пассажира.");
+        yield new Person(
+            askValue("Рост (float, not null, >0): ", x -> (x != null && x > 0), Float::parseFloat),
+            askValue("Вес (int, not null, >0): ", x -> (x != null && x > 0), Integer::parseInt),
+            askValue("Номер паспорта (string, len<=28): ", x -> x.length() <= 28, s -> s),
+            askLocation());
+      }
+      case "2", "нет" -> null;
+      default -> throw new ObjectCreationException("Некорректный выбор.");
+    };
   }
 
   /**

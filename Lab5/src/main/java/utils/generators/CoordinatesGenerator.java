@@ -27,7 +27,10 @@ public class CoordinatesGenerator extends ObjectGenerator<Coordinates> {
   public Coordinates create() throws ObjectCreationException {
     System.out.println("Добро пожаловать в Формирователь координат.");
     return new Coordinates(
-        askFloat("Координата по X (float, not null): ", Objects::nonNull),
-        askLong("Координата по Y (Long, not null, <=332): ", x -> (x != null && x <= 332)));
+        askValue("Координата по X (float, not null): ", Objects::nonNull, Float::parseFloat),
+        askValue(
+            "Координата по Y (Long, not null, <=332): ",
+            x -> (x != null && x <= 332),
+            Long::parseLong));
   }
 }

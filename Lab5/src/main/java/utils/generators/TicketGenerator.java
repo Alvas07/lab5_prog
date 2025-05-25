@@ -43,10 +43,13 @@ public class TicketGenerator extends ObjectGenerator<Ticket> {
     System.out.println("Добро пожаловать в Формирователь билета.");
     return new Ticket(
         idManager.getAndIncrement(),
-        askString("Наименование (string, not null, not empty): ", x -> (x != null && !x.isEmpty())),
+        askValue(
+            "Наименование (string, not null, not empty): ",
+            x -> (x != null && !x.isEmpty()),
+            s -> s),
         askCoordinates(),
         LocalDate.now(),
-        askFloat("Стоимость (float, not null, >0): ", x -> (x != null && x > 0)),
+        askValue("Стоимость (float, not null, >0): ", x -> (x != null && x > 0), Float::parseFloat),
         askTicketType(),
         askPerson());
   }

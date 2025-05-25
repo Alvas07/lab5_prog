@@ -53,6 +53,10 @@ public class XmlReader implements TicketReader {
 
     List<Ticket> tickets = new ArrayList<>();
 
+    if (new File(fileName).length() == 0) {
+      return tickets;
+    }
+
     try (InputStreamReader reader =
         new InputStreamReader(new FileInputStream(fileName), StandardCharsets.UTF_8)) {
       DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
@@ -73,6 +77,7 @@ public class XmlReader implements TicketReader {
         }
       }
     } catch (Exception e) {
+      System.out.println(e.getMessage());
       throw new FileReadException("Невозможно десериализовать файл.");
     }
 
