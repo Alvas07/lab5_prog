@@ -100,6 +100,17 @@ public class XmlWriter implements TicketWriter {
     return true;
   }
 
+  /**
+   * Записывает объект класса {@link Ticket} в XML-дерево.
+   *
+   * @param document XML-дерево.
+   * @param parentElement родительский XML-элемент.
+   * @param ticket объект класса {@link Ticket}.
+   * @see Ticket
+   * @throws FileWriteException если происходит ошибка при сериализации данных.
+   * @author Alvas
+   * @since 2.0
+   */
   private void writeTicket(Document document, Element parentElement, Ticket ticket)
       throws FileWriteException {
     try {
@@ -136,6 +147,17 @@ public class XmlWriter implements TicketWriter {
     }
   }
 
+  /**
+   * Записывает объект класса {@link Coordinates} в XML-дерево.
+   *
+   * @param document XML-дерево.
+   * @param parentElement родительский XML-элемент.
+   * @param coordinates объект класса {@link Coordinates}.
+   * @see Coordinates
+   * @throws FileWriteException если происходит ошибка при сериализации данных.
+   * @author Alvas
+   * @since 2.0
+   */
   private void writeCoordinates(Document document, Element parentElement, Coordinates coordinates)
       throws FileWriteException {
     try {
@@ -151,6 +173,17 @@ public class XmlWriter implements TicketWriter {
     }
   }
 
+  /**
+   * Записывает объект класса {@link Location} в XML-дерево.
+   *
+   * @param document XML-дерево.
+   * @param parentElement родительский XML-элемент.
+   * @param location объект класса {@link Location}.
+   * @see Location
+   * @throws FileWriteException если происходит ошибка при сериализации данных.
+   * @author Alvas
+   * @since 2.0
+   */
   private void writeLocation(Document document, Element parentElement, Location location)
       throws FileWriteException {
     try {
@@ -174,6 +207,17 @@ public class XmlWriter implements TicketWriter {
     }
   }
 
+  /**
+   * Записывает объект класса {@link Person} в XML-дерево.
+   *
+   * @param document XML-дерево.
+   * @param parentElement родительский XML-элемент.
+   * @param person объект класса {@link Person}.
+   * @see Person
+   * @throws FileWriteException если происходит ошибка при сериализации данных.
+   * @author Alvas
+   * @since 2.0
+   */
   private void writePerson(Document document, Element parentElement, Person person)
       throws FileWriteException {
     try {
