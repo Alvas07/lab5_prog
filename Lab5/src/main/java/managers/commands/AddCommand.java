@@ -5,7 +5,6 @@ import exceptions.CommandExecuteException;
 import exceptions.ObjectCreationException;
 import exceptions.WrongArgumentException;
 import managers.CollectionManager;
-import managers.IdManager;
 import utils.generators.TicketGenerator;
 
 /**
@@ -52,12 +51,11 @@ public class AddCommand implements Command {
     }
 
     try {
-      Ticket ticket = new TicketGenerator().create();
+      Ticket ticket = new TicketGenerator(collectionManager.getIdManager()).create();
       collectionManager.addTicket(ticket);
       System.out.println("Элемент успешно добавлен.");
     } catch (WrongArgumentException | ObjectCreationException e) {
       System.out.println(e.getMessage());
-      IdManager.removeLastId();
     }
   }
 

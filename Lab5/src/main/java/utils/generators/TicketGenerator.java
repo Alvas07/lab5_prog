@@ -14,6 +14,12 @@ import managers.IdManager;
  * @since 1.0
  */
 public class TicketGenerator extends ObjectGenerator<Ticket> {
+  private final IdManager idManager;
+
+  public TicketGenerator(IdManager idManager) {
+    this.idManager = idManager;
+  }
+
   /**
    * Генерирует объект класса {@link Ticket}, запрашивая от пользователя значения полей.
    *
@@ -28,7 +34,7 @@ public class TicketGenerator extends ObjectGenerator<Ticket> {
   public Ticket create() throws ObjectCreationException {
     System.out.println("Добро пожаловать в Формирователь билета.");
     return new Ticket(
-        IdManager.getAndIncrement(),
+        idManager.getAndIncrement(),
         askString("Наименование (string, not null, not empty): ", x -> (x != null && !x.isEmpty())),
         askCoordinates(),
         LocalDate.now(),

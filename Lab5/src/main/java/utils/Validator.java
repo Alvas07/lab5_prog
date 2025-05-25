@@ -18,8 +18,8 @@ public class Validator {
    * @author Alvas
    * @since 1.0
    */
-  public static boolean isValidTicket(Ticket t) {
-    return IdManager.idIsUnique(t.getId())
+  public static boolean isValidTicket(Ticket t, IdManager idManager) {
+    return idManager.idIsUnique(t.getId())
         && t.getName() != null
         && !t.getName().isEmpty()
         && t.getCoordinates() != null

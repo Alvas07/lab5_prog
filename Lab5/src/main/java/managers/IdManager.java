@@ -1,7 +1,8 @@
 package managers;
 
 import data.Ticket;
-import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -17,8 +18,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @since 1.0
  */
 public final class IdManager {
-  private static final AtomicInteger counter = new AtomicInteger(1);
-  private static final ArrayList<Integer> idList = new ArrayList<>();
+  private final AtomicInteger counter = new AtomicInteger(1);
+  private final Set<Integer> idList = new HashSet<>();
 
   /**
    * Возвращает свободное значение {@code id} и переходит на следующее свободное значение.
@@ -29,24 +30,8 @@ public final class IdManager {
    * @author Alvas
    * @since 1.0
    */
-  public static int getAndIncrement() {
-    int nextId = counter.getAndIncrement();
-    while (!idIsUnique(nextId)) {
-      nextId = counter.getAndIncrement();
-    }
-    addId(nextId);
-    return nextId;
-  }
-
-  /**
-   * Удаляет из списка последнее использованное значение {@code id} и переходит на него.
-   *
-   * @author Alvas
-   * @since 1.0
-   */
-  public static void removeLastId() {
-    int prevId = counter.decrementAndGet();
-    remove(prevId);
+  public int getAndIncrement() {
+    return counter.getAndIncrement();
   }
 
   /**
@@ -58,29 +43,20 @@ public final class IdManager {
    * @author Alvas
    * @since 1.0
    */
-  public static boolean idIsUnique(int id) {
+  public boolean idIsUnique(int id) {
     return !idList.contains(id);
   }
 
   /**
-   * Добавляет заданное значение {@code id} в общий список.
+   * Добавляет заданное значение {@code id} в общий список и устанавливает счетчик на максимальный
+   * из существующих {@code id}.
    *
    * @param id значение для добавления.
    * @author Alvas
-   * @since 1.0
+   * @since 2.0
    */
-  public static void addId(int id) {
+  public void addId(int id) {
     idList.add(id);
-  }
-
-  /**
-   * Удаляет заданное значение {@code id} из общего списка.
-   *
-   * @param id значение для удаления.
-   * @author Alvas
-   * @since 1.0
-   */
-  public static void remove(int id) {
-    idList.removeIf(x -> (x == id));
+    counter.getAndUpdate(x -> Math.max(x, id + 1));
   }
 }

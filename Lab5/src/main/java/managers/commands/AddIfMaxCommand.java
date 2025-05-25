@@ -5,7 +5,6 @@ import exceptions.CommandExecuteException;
 import exceptions.ObjectCreationException;
 import exceptions.WrongArgumentException;
 import managers.CollectionManager;
-import managers.IdManager;
 import utils.generators.TicketGenerator;
 
 /**
@@ -55,7 +54,7 @@ public class AddIfMaxCommand implements Command {
     Ticket maxTicket = collectionManager.getMaxTicket();
 
     try {
-      Ticket ticket = new TicketGenerator().create();
+      Ticket ticket = new TicketGenerator(collectionManager.getIdManager()).create();
       if (maxTicket == null || collectionManager.getCollection().isEmpty()) {
         collectionManager.addTicket(ticket);
         System.out.println("Элемент добавлен.");
@@ -64,11 +63,9 @@ public class AddIfMaxCommand implements Command {
         System.out.println("Элемент добавлен.");
       } else {
         System.out.println("Элемент не был добавлен.");
-        IdManager.removeLastId();
       }
     } catch (WrongArgumentException | ObjectCreationException e) {
       System.out.println(e.getMessage());
-      IdManager.removeLastId();
     }
   }
 

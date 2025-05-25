@@ -67,7 +67,8 @@ public class Console {
   public void start(String[] args) {
     Scanner scanner = scannerManager.getScanner();
     FileManager fileManager = new FileManager(args[0]);
-    CollectionManager collectionManager = new CollectionManager(fileManager);
+    IdManager idManager = new IdManager();
+    CollectionManager collectionManager = new CollectionManager(fileManager, idManager);
     CommandManager commandManager = new CommandManager(collectionManager, fileManager, this);
     try {
       System.out.println("Загрузка информации о коллекции из файла...");

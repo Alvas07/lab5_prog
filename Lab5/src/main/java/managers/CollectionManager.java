@@ -26,6 +26,7 @@ public class CollectionManager {
   private final ArrayDeque<Ticket> collection;
   private final LocalDateTime initializationTime;
   private LocalDateTime lastUpdateTime;
+  private final IdManager idManager;
 
   /**
    * Конструктор менеджера коллекции.
@@ -35,14 +36,21 @@ public class CollectionManager {
    * <p>Время берет из системных параметров файла.
    *
    * @param fileManager файловый менеджер.
+   * @param idManager менеджер {@code id}.
    * @see FileManager
+   * @see IdManager
    * @author Alvas
    * @since 2.0
    */
-  public CollectionManager(FileManager fileManager) {
+  public CollectionManager(FileManager fileManager, IdManager idManager) {
     this.collection = new ArrayDeque<>();
     this.initializationTime = fileManager.getFileCreationTime();
     this.lastUpdateTime = fileManager.getFileLastModifiedTime();
+    this.idManager = idManager;
+  }
+
+  public IdManager getIdManager() {
+    return idManager;
   }
 
   /**
@@ -114,8 +122,6 @@ public class CollectionManager {
   /**
    * Добавляет элемент {@link Ticket} в коллекцию и обновляет время последней модификации.
    *
-   * <p>{@code id} нового элемента добавляется в список всех {@code id} из класса {@link IdManager}.
-   *
    * @param ticket элемент для добавления.
    * @see Ticket
    * @see IdManager
@@ -131,8 +137,8 @@ public class CollectionManager {
     if (collection.contains(ticket)) {
       throw new WrongArgumentException("Билет уже содержится в данной коллекции.");
     }
-    IdManager.addId(ticket.getId());
     collection.addLast(ticket);
+    idManager.addId(ticket.getId());
     updateLastModifiedTime();
   }
 
@@ -147,7 +153,7 @@ public class CollectionManager {
   public void fillCollection(List<Ticket> tickets) {
     for (Ticket ticket : tickets) {
       try {
-        if (Validator.isValidTicket(ticket)) {
+        if (Validator.isValidTicket(ticket, idManager)) {
           addTicket(ticket);
         } else {
           System.out.println("Объект не прошел валидацию.");
@@ -205,8 +211,6 @@ public class CollectionManager {
   /**
    * Удаляет заданный элемент {@link Ticket} из коллекции и обновляет время последней модификации.
    *
-   * <p>{@code id} данного элемента удаляется из списка всех {@code id} из класса {@link IdManager}.
-   *
    * @param ticket элемент для удаления.
    * @see Ticket
    * @see IdManager
@@ -219,7 +223,6 @@ public class CollectionManager {
     if (ticket == null) {
       throw new RemoveException("Удаляемый элемент не может быть null.");
     }
-    IdManager.remove(ticket.getId());
     collection.remove(ticket);
     updateLastModifiedTime();
   }
@@ -227,8 +230,6 @@ public class CollectionManager {
   /**
    * Удаляет первый элемент {@link Ticket} коллекции, возвращает его и обновляет время последней
    * модификации.
-   *
-   * <p>{@code id} первого элемента удаляется из списка всех {@code id} из класса {@link IdManager}.
    *
    * @return Первый элемент коллекции.
    * @see Ticket
@@ -243,7 +244,6 @@ public class CollectionManager {
     if (head == null) {
       throw new RemoveException("Удаляемый элемент не может быть null.");
     }
-    IdManager.remove(head.getId());
     updateLastModifiedTime();
     return head;
   }
