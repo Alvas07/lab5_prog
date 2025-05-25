@@ -16,6 +16,14 @@ import managers.IdManager;
 public class TicketGenerator extends ObjectGenerator<Ticket> {
   private final IdManager idManager;
 
+  /**
+   * Конструктор генератора билетов.
+   *
+   * @param idManager менеджер {@code id}.
+   * @see IdManager
+   * @author Alvas
+   * @since 2.0
+   */
   public TicketGenerator(IdManager idManager) {
     this.idManager = idManager;
   }
