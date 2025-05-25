@@ -19,7 +19,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import utils.Validator;
 import utils.XmlUtils;
 
 /**
@@ -67,11 +66,7 @@ public class XmlReader implements TicketReader {
           try {
             Element element = (Element) node;
             Ticket ticket = parseTicket(element);
-            if (Validator.isValidTicket(ticket)) {
-              tickets.add(ticket);
-            } else {
-              System.out.println("Объект не прошел валидацию.");
-            }
+            tickets.add(ticket);
           } catch (ObjectCreationException e) {
             throw new FileReadException(e.getMessage());
           }
@@ -130,12 +125,12 @@ public class XmlReader implements TicketReader {
   private Ticket parseTicket(Element element) throws ObjectCreationException {
     try {
       return new Ticket(
-          getIntValue(element, "id"),
-          getTextValue(element, "name"),
+          getValue(element, "id", Integer::parseInt),
+          getValue(element, "name", s -> s),
           parseCoordinates(element),
           parseCreationDate(element),
-          getFloatValue(element, "price"),
-          parseEnum(element, "type", TicketType.class),
+          getValue(element, "price", Float::parseFloat),
+          getEnum(element, "type", TicketType.class),
           parsePerson(element));
     } catch (NullPointerException | NumberFormatException e) {
       throw new ObjectCreationException("Некорректный формат билета.");
@@ -157,8 +152,11 @@ public class XmlReader implements TicketReader {
    * @since 1.0
    */
   private LocalDate parseCreationDate(Element element) throws ObjectCreationException {
+    String text = getValue(element, "creationDate", s -> s);
+    if (text == null) {
+      return LocalDate.now();
+    }
     try {
-      String text = getTextValue(element, "creationDate");
       return LocalDate.parse(text);
     } catch (DateTimeParseException e) {
       throw new ObjectCreationException("Некорректный формат даты создания.");
@@ -180,11 +178,12 @@ public class XmlReader implements TicketReader {
    * @since 1.0
    */
   private Coordinates parseCoordinates(Element element) throws ObjectCreationException {
-    if (element == null) {
+    if (getValue(element, "coordinates", s -> s) == null) {
       throw new ObjectCreationException("Отсутствуют координаты.");
     }
     try {
-      return new Coordinates(getFloatValue(element, "cx"), getLongValue(element, "cy"));
+      return new Coordinates(
+          getValue(element, "cx", Float::parseFloat), getValue(element, "cy", Long::parseLong));
     } catch (NullPointerException | NumberFormatException e) {
       throw new ObjectCreationException("Некорректный формат координат.");
     }
@@ -205,12 +204,14 @@ public class XmlReader implements TicketReader {
    * @since 1.0
    */
   private Location parseLocation(Element element) throws ObjectCreationException {
-    if (element == null) {
+    if (getValue(element, "location", s -> s) == null) {
       return null;
     }
     try {
       return new Location(
-          getLongValue(element, "lx"), getLongValue(element, "ly"), getIntValue(element, "lz"));
+          getValue(element, "lx", Long::parseLong),
+          getValue(element, "ly", Long::parseLong),
+          getValue(element, "lz", Integer::parseInt));
     } catch (NullPointerException | NumberFormatException e) {
       throw new ObjectCreationException("Некорректный формат местоположения.");
     }
@@ -231,43 +232,17 @@ public class XmlReader implements TicketReader {
    * @since 1.0
    */
   private Person parsePerson(Element element) throws ObjectCreationException {
-    if (element == null) {
+    if (getValue(element, "person", s -> s) == null) {
       return null;
     }
     try {
       return new Person(
-          getFloatValue(element, "height"),
-          getIntValue(element, "weight"),
-          getTextValue(element, "passportID"),
+          getValue(element, "height", Float::parseFloat),
+          getValue(element, "weight", Integer::parseInt),
+          getValue(element, "passportID", s -> s),
           parseLocation(element));
     } catch (NullPointerException | NumberFormatException e) {
       throw new ObjectCreationException("Некорректный формат пассажира.");
-    }
-  }
-
-  /**
-   * Преобразует XML-элемент в перечисление {@link Enum}.
-   *
-   * <p>Использует для преобразования входных данных методы класса {@link XmlUtils}.
-   *
-   * @param element XML-элемент для преобразования.
-   * @param tagName имя XML-тега, соответствующего перечислению.
-   * @param enumClass класс перечисления.
-   * @return Перечисление {@link Enum}.
-   * @param <T> тип перечисления.
-   * @see Enum
-   * @see XmlUtils
-   * @throws ObjectCreationException если формат входных данных типа некорректен.
-   * @author Alvas
-   * @since 1.0
-   */
-  private <T extends Enum<T>> T parseEnum(Element element, String tagName, Class<T> enumClass)
-      throws ObjectCreationException {
-    try {
-      String text = getTextValue(element, tagName);
-      return Enum.valueOf(enumClass, text);
-    } catch (IllegalArgumentException e) {
-      throw new ObjectCreationException("Некорректный формат типа.");
     }
   }
 }

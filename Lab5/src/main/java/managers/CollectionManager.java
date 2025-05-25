@@ -10,6 +10,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import utils.DateTimeUtils;
+import utils.Validator;
 
 /**
  * Класс, отвечающий за взаимодействие с коллекцией элементов {@link Ticket}.
@@ -146,7 +147,11 @@ public class CollectionManager {
   public void fillCollection(List<Ticket> tickets) {
     for (Ticket ticket : tickets) {
       try {
-        addTicket(ticket);
+        if (Validator.isValidTicket(ticket)) {
+          addTicket(ticket);
+        } else {
+          System.out.println("Объект не прошел валидацию.");
+        }
       } catch (WrongArgumentException e) {
         System.out.println(e.getMessage());
       }

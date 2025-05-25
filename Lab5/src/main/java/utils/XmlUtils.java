@@ -1,5 +1,7 @@
 package utils;
 
+import exceptions.ObjectCreationException;
+import java.util.function.Function;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -11,102 +13,46 @@ import org.w3c.dom.NodeList;
  */
 public final class XmlUtils {
   /**
-   * Возвращает строку из указанного тега XML-элемента.
-   *
-   * <p>Возвращает пустую строку при пустом значении.
+   * Возвращает значение типа {@link T} из указанного тега XML-элемента.
    *
    * @param element XML-элемент {@link Element}.
    * @param tagName имя XML-тега.
-   * @return Строка.
+   * @param parser функция-парсер.
+   * @return Значение типа {@link T}.
+   * @param <T> Тип возвращаемого значения.
    * @see Element
    * @author Alvas
-   * @since 1.0
+   * @since 2.0
    */
-  public static String getTextValue(Element element, String tagName) {
+  public static <T> T getValue(Element element, String tagName, Function<String, T> parser) {
     NodeList nodeList = element.getElementsByTagName(tagName);
-    if (nodeList.getLength() == 0) {
-      return "";
-    }
-    return nodeList.item(0).getTextContent().trim();
-  }
-
-  /**
-   * Возвращает целое число типа {@code Integer} из указанного тега XML-элемента.
-   *
-   * <p>Возвращает {@code null} при пустом значении.
-   *
-   * @param element XML-элемент {@link Element}.
-   * @param tagName имя XML-тега.
-   * @return Целое число типа {@code Integer}.
-   * @see Element
-   * @author Alvas
-   * @since 1.0
-   */
-  public static Integer getIntValue(Element element, String tagName) {
-    String text = getTextValue(element, tagName);
+    String text = nodeList.item(0).getTextContent().trim();
     if (text.isEmpty()) {
       return null;
     }
-    return Integer.parseInt(text);
+    return parser.apply(text);
   }
 
   /**
-   * Возвращает целое число типа {@code Long} из указанного тега XML-элемента.
-   *
-   * <p>Возвращает {@code null} при пустом значении.
+   * Возвращает значение перечисления из указанного тега XML-элемента.
    *
    * @param element XML-элемент {@link Element}.
    * @param tagName имя XML-тега.
-   * @return Целое число типа {@code Long}.
+   * @param enumClass класс перечисления.
+   * @return Перечисление.
+   * @param <T> тип возвращаемого перечисления.
    * @see Element
+   * @throws ObjectCreationException если формат входных данных типа некорректен.
    * @author Alvas
-   * @since 1.0
+   * @since 2.0
    */
-  public static Long getLongValue(Element element, String tagName) {
-    String text = getTextValue(element, tagName);
-    if (text.isEmpty()) {
-      return null;
+  public static <T extends Enum<T>> T getEnum(Element element, String tagName, Class<T> enumClass)
+      throws ObjectCreationException {
+    try {
+      String text = getValue(element, tagName, s -> s);
+      return Enum.valueOf(enumClass, text);
+    } catch (IllegalArgumentException | NullPointerException e) {
+      throw new ObjectCreationException("Некорректный формат типа.");
     }
-    return Long.parseLong(text);
-  }
-
-  /**
-   * Возвращает дробное число типа {@code Float} из указанного тега XML-элемента.
-   *
-   * <p>Возвращает {@code null} при пустом значении.
-   *
-   * @param element XML-элемент {@link Element}.
-   * @param tagName имя XML-тега.
-   * @return Дробное число типа {@code Float}.
-   * @see Element
-   * @author Alvas
-   * @since 1.0
-   */
-  public static Float getFloatValue(Element element, String tagName) {
-    String text = getTextValue(element, tagName);
-    if (text.isEmpty()) {
-      return null;
-    }
-    return Float.parseFloat(text);
-  }
-
-  /**
-   * Возвращает дробное число типа {@code Double} из указанного тега XML-элемента.
-   *
-   * <p>Возвращает {@code null} при пустом значении.
-   *
-   * @param element XML-элемент {@link Element}.
-   * @param tagName имя XML-тега.
-   * @return Дробное число типа {@code Double}.
-   * @see Element
-   * @author Alvas
-   * @since 1.0
-   */
-  public static Double getDoubleValue(Element element, String tagName) {
-    String text = getTextValue(element, tagName);
-    if (text.isEmpty()) {
-      return null;
-    }
-    return Double.parseDouble(text);
   }
 }

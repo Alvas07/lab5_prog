@@ -67,7 +67,7 @@ public class Validator {
         || (p.getHeight() != null
             && p.getHeight() > 0
             && p.getWeight() > 0
-            && p.getPassportID().length() <= 28
+            && (p.getPassportID() == null || p.getPassportID().length() <= 28)
             && isValidLocation(p.getLocation()));
   }
 }
