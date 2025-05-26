@@ -81,7 +81,7 @@ public class FileManager {
       FileTime time = Files.getLastModifiedTime(Paths.get(fileName));
       return LocalDateTime.ofInstant(time.toInstant(), ZoneId.systemDefault());
     } catch (IOException e) {
-      System.out.println("Невозможно прочитать время создания файла.");
+      System.out.println("Невозможно прочитать время последней модификации файла.");
       return null;
     }
   }
