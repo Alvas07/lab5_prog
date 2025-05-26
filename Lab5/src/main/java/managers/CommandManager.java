@@ -2,6 +2,8 @@ package managers;
 
 import exceptions.CommandExecuteException;
 import exceptions.UnknownCommandException;
+
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import managers.commands.*;
 
@@ -13,7 +15,7 @@ import managers.commands.*;
  * @since 1.0
  */
 public class CommandManager {
-  private final LinkedHashMap<String, Command> commandList;
+  private final HashMap<String, Command> commandList;
 
   /**
    * Конструктор менеджера команд.
@@ -78,7 +80,7 @@ public class CommandManager {
     }
     Command command = commandList.get(commandName);
     try {
-      command.execute(line.strip().split(" "));
+      command.execute(line.strip().trim().split("\\s+"));
     } catch (CommandExecuteException e) {
       System.out.println(e.getMessage());
     }
@@ -92,7 +94,7 @@ public class CommandManager {
    * @author Alvas
    * @since 1.0
    */
-  public LinkedHashMap<String, Command> getCommandList() {
+  public HashMap<String, Command> getCommandList() {
     return commandList;
   }
 }
