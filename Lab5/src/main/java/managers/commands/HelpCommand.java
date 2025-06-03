@@ -1,6 +1,8 @@
 package managers.commands;
 
 import exceptions.CommandExecuteException;
+
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import managers.CollectionManager;
 import managers.CommandManager;
@@ -49,7 +51,7 @@ public class HelpCommand implements Command {
   public void execute(String[] args) throws CommandExecuteException {
     CommandManager commandManager =
         new CommandManager(collectionManager, new FileManager(""), console);
-    LinkedHashMap<String, Command> commandList = commandManager.getCommandList();
+    HashMap<String, Command> commandList = commandManager.getCommandList();
     System.out.println("ДОСТУПНЫЕ КОМАНДЫ:");
     for (String commandName : commandList.keySet()) {
       Command command = commandList.get(commandName);
